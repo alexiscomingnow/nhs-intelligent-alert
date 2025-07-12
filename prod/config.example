@@ -1,0 +1,5 @@
+# rename to config.env and edit values before running bootstrap
+PG_CONN=postgresql://postgres:postgres@localhost:5432/nhs
+DATA_SOURCE=nhs
+POLL_INTERVAL=3600
+#NHS_CSV_URL=https://www.england.nhs.uk/...zip

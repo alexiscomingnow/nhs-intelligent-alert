@@ -1,0 +1,5 @@
+playwright==1.53.0
+pandas==2.2.2
+psycopg[binary]==3.1.19
+requests==2.32.3
+beautifulsoup4==4.12.3

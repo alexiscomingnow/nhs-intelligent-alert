@@ -1,0 +1,485 @@
+# Private Healthcare Clinic Demo Configuration
+# 示例：高端私立医疗机构
+
+tenant:
+  id: "harley_street_clinic"
+  name: "Harley Street Premium Healthcare"
+  type: "private_clinic"
+  domain: "harleystreetpremium.com"
+  
+  # 订阅信息
+  subscription:
+    tier: "Enterprise"
+    monthly_cost: 999.00
+    currency: "GBP"
+    billing_cycle: "annual"
+    discount_percentage: 15  # 年付折扣
+    contract_end_date: "2025-12-31"
+    
+  # 企业级服务限制
+  limits:
+    max_users: -1  # 无限制
+    max_alerts_per_month: -1
+    max_api_calls_per_month: -1
+    max_messages_per_month: -1
+    max_data_sources: -1
+    custom_integrations: true
+    white_label_branding: true
+    dedicated_support: true
+    
+  # 联系信息
+  contact:
+    primary_email: "admin@harleystreetpremium.com"
+    billing_email: "accounts@harleystreetpremium.com"
+    technical_contact: "tech@harleystreetpremium.com"
+    clinical_lead: "clinical.director@harleystreetpremium.com"
+    phone: "+44 20 7935 7777"
+    emergency_contact: "+44 7700 900123"
+    address:
+      street: "45 Harley Street"
+      city: "London"
+      postcode: "W1G 8QH"
+      country: "United Kingdom"
+
+# 高端品牌定制
+branding:
+  logo_url: "https://cdn.harleystreetpremium.com/logo-premium.png"
+  favicon_url: "https://cdn.harleystreetpremium.com/favicon-premium.ico"
+  white_label: true
+  colors:
+    primary: "#1a365d"      # 深蓝色 - 专业感
+    secondary: "#2d5aa0"    # 皇家蓝
+    accent: "#d69e2e"       # 金色 - 豪华感
+    success: "#38a169"      # 绿色
+    warning: "#d69e2e"      # 金色
+    error: "#e53e3e"        # 红色
+    background: "#f7fafc"   # 浅灰色背景
+    text: "#1a202c"         # 深色文本
+    muted: "#718096"        # 次要文本
+  fonts:
+    primary: "Playfair Display, serif"  # 优雅衬线字体
+    secondary: "Source Sans Pro, sans-serif"  # 现代无衬线字体
+    monospace: "Monaco, monospace"
+  custom_css: |
+    .premium-header {
+      background: linear-gradient(135deg, #1a365d 0%, #2d5aa0 50%, #d69e2e 100%);
+      box-shadow: 0 4px 20px rgba(26, 54, 93, 0.3);
+    }
+    .premium-card {
+      border: 2px solid #d69e2e;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      background: linear-gradient(145deg, #ffffff 0%, #f7fafc 100%);
+    }
+    .vip-badge {
+      background: linear-gradient(45deg, #d69e2e, #f6e05e);
+      color: #1a202c;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.8rem;
+    }
+
+# 私立医疗特定配置
+private_healthcare_config:
+  # 专科服务 (高端专科)
+  specialties:
+    premium_services:
+      - "Cosmetic Surgery"
+      - "Fertility Treatment"
+      - "Executive Health Screening"
+      - "Concierge Medicine"
+      - "Medical Tourism"
+    
+    consultant_led:
+      - "Cardiology"
+      - "Neurology"
+      - "Oncology"
+      - "Orthopaedics"
+      - "Dermatology"
+      - "Ophthalmology"
+      - "Psychiatry"
+      - "Rheumatology"
+      - "Endocrinology"
+      - "Gastroenterology"
+  
+  # 服务层级
+  service_tiers:
+    platinum:
+      description: "白金级VIP服务"
+      features:
+        - "24/7专属医疗团队"
+        - "私人套房住院"
+        - "专车接送服务"
+        - "营养师咨询"
+        - "健康管家服务"
+      price_multiplier: 3.0
+    
+    gold:
+      description: "金牌优质服务"
+      features:
+        - "优先预约"
+        - "专属候诊区"
+        - "个人病案管理"
+        - "术后跟踪服务"
+      price_multiplier: 2.0
+    
+    standard:
+      description: "标准优质服务"
+      features:
+        - "快速预约"
+        - "现代化设施"
+        - "专业医疗团队"
+      price_multiplier: 1.0
+  
+  # 国际患者服务
+  international_services:
+    medical_tourism: true
+    language_support: ["English", "Arabic", "Russian", "Chinese", "French", "German"]
+    visa_assistance: true
+    accommodation_booking: true
+    airport_transfer: true
+    
+  # 保险和支付
+  insurance_providers:
+    - "Bupa"
+    - "AXA PPP"
+    - "Aviva"
+    - "WPA"
+    - "Cigna Global"
+    - "Allianz Care"
+  
+  payment_methods:
+    - "Private pay"
+    - "Insurance direct billing"
+    - "Corporate accounts"
+    - "International wire transfer"
+    - "Cryptocurrency" # 创新支付方式
+
+# 高端通知配置
+notifications:
+  # WhatsApp Business Premium
+  whatsapp:
+    enabled: true
+    business_account_id: "987654321012345"
+    phone_number_id: "109876543210123"
+    display_name: "Harley Street Premium"
+    verified_business: true
+    
+    # 定制化Flow
+    flows:
+      vip_concierge:
+        flow_id: "vip123456"
+        version: "2.0"
+        name: "VIP Concierge Service"
+        description: "白金级客户专属服务流程"
+      
+      appointment_premium:
+        flow_id: "premium789"
+        version: "1.8"
+        name: "Premium Appointment Booking"
+        description: "高端预约服务流程"
+      
+      health_screening:
+        flow_id: "health456"
+        version: "1.2"
+        name: "Executive Health Screening"
+        description: "高管健康筛查流程"
+    
+    # 定制消息模板
+    templates:
+      vip_welcome: |
+        👑 *Welcome to Harley Street Premium Healthcare*
+        
+        Thank you for choosing our exclusive medical services.
+        
+        As a valued client, you have access to:
+        🏥 Priority appointments with leading consultants
+        📱 24/7 medical concierge service
+        🚗 Private transportation arrangements
+        🌟 Personalized health management
+        
+        Your dedicated health manager will contact you shortly.
+      
+      appointment_confirmation: |
+        📅 *Appointment Confirmed - Premium Service*
+        
+        *Consultant:* {consultant_name}
+        *Specialty:* {specialty}
+        *Date:* {date}
+        *Time:* {time}
+        *Location:* {clinic_address}
+        
+        🚗 *Transportation:* Premium car service available
+        ☕ *Refreshments:* Complimentary refreshments in VIP lounge
+        📋 *Preparation:* Please arrive 15 minutes early
+        
+        Need to reschedule? Reply or call our concierge team.
+      
+      health_report_ready: |
+        📊 *Your Health Report is Ready*
+        
+        Your comprehensive health screening results are now available.
+        
+        📋 Key findings and recommendations are attached
+        📞 Follow-up consultation scheduled with Dr. {doctor_name}
+        💼 Executive summary for your records
+        
+        Access your secure portal for detailed results.
+  
+  # SMS Premium服务
+  sms:
+    enabled: true
+    provider: "twilio"
+    sender_id: "HarleyPrem"
+    international_support: true
+    
+    templates:
+      urgent_alert: "[URGENT] {clinic_name}: Your appointment with {consultant} on {date} requires immediate attention. Please call +44 20 7935 7777"
+      vip_service: "[VIP] {clinic_name}: Your premium service is ready. Chauffeur arriving at {time}. Any questions? Call your personal health manager."
+      results_ready: "[RESULTS] {clinic_name}: Your health screening results are ready for review. Secure link: {secure_url}"
+  
+  # Email高级服务
+  email:
+    enabled: true
+    from_address: "concierge@harleystreetpremium.com"
+    from_name: "Harley Street Premium Healthcare"
+    reply_to: "clientcare@harleystreetpremium.com"
+    
+    # 自定义邮件模板
+    templates:
+      executive_summary: "executive_health_summary.html"
+      vip_appointment: "vip_appointment_confirmation.html"
+      health_report: "comprehensive_health_report.html"
+    
+    signature: |
+      ---
+      Harley Street Premium Healthcare
+      45 Harley Street, London W1G 8QH
+      Phone: +44 20 7935 7777 | Emergency: +44 7700 900123
+      Web: www.harleystreetpremium.com
+      
+      "Excellence in Healthcare - Personalized for You"
+
+# 高级提醒规则
+alert_rules:
+  # VIP客户优先提醒
+  vip_priority_alert:
+    enabled: true
+    trigger: "immediate"
+    priority: "critical"
+    channels: ["whatsapp", "sms", "email", "phone_call"]
+    message: "VIP客户健康状况需要immediate attention"
+  
+  # 预防性健康提醒
+  preventive_health:
+    enabled: true
+    screening_intervals:
+      executive_health: "annual"
+      cardiac_screening: "biannual"
+      cancer_screening: "age_appropriate"
+    priority: "high"
+    advance_notice_days: 30
+  
+  # 等候时间优化
+  wait_time_optimization:
+    enabled: true
+    max_wait_minutes: 5  # VIP客户最多等候5分钟
+    alternative_arrangements: true
+    compensation_threshold: 15  # 超过15分钟提供补偿
+  
+  # 国际患者特殊提醒
+  international_patient_alerts:
+    enabled: true
+    visa_reminder: 30  # 签证到期前30天提醒
+    travel_insurance: 7  # 旅行保险过期前7天
+    medication_refill: 14  # 处方药续药前14天
+
+# 高级数据源
+data_sources:
+  # 私立医疗网络数据
+  private_healthcare_network:
+    enabled: true
+    providers:
+      - "Circle Health Group"
+      - "Spire Healthcare"
+      - "BMI Healthcare"
+      - "Nuffield Health"
+      - "HCA Healthcare UK"
+    
+    real_time_availability: true
+    price_comparison: true
+    consultant_ratings: true
+  
+  # 国际医疗网络
+  international_network:
+    enabled: true
+    regions: ["Europe", "Middle East", "Asia Pacific", "North America"]
+    medical_tourism_data: true
+    accreditation_info: true
+  
+  # 医疗研究数据
+  research_data:
+    enabled: true
+    clinical_trials: true
+    latest_treatments: true
+    evidence_based_medicine: true
+
+# 高级分析和报告
+analytics:
+  # 商业智能
+  business_intelligence:
+    patient_lifetime_value: true
+    revenue_optimization: true
+    consultant_performance: true
+    service_profitability: true
+  
+  # 医疗质量指标
+  clinical_quality:
+    patient_outcomes: true
+    satisfaction_scores: true
+    clinical_indicators: true
+    safety_metrics: true
+  
+  # 预测分析
+  predictive_analytics:
+    demand_forecasting: true
+    capacity_planning: true
+    patient_churn_prediction: true
+    health_risk_assessment: true
+  
+  # 定制报告
+  custom_reports:
+    board_level_dashboard: true
+    clinical_governance: true
+    financial_performance: true
+    patient_experience: true
+
+# 高级集成
+integrations:
+  # 医院信息系统
+  his_integration:
+    system: "Epic MyChart"
+    api_endpoint: "https://api.epic.harley.internal/v1"
+    real_time_sync: true
+    bidirectional: true
+  
+  # 支付系统集成
+  payment_systems:
+    stripe_connect: true
+    paypal_business: true
+    bank_direct_debit: true
+    international_wire: true
+    cryptocurrency_gateway: true
+  
+  # CRM集成
+  crm_integration:
+    system: "Salesforce Health Cloud"
+    patient_360_view: true
+    marketing_automation: true
+    customer_journey_tracking: true
+  
+  # 远程医疗平台
+  telemedicine:
+    platform: "Doxy.me Professional"
+    video_consultations: true
+    remote_monitoring: true
+    ai_symptom_checker: true
+
+# 企业级安全
+security:
+  # 数据保护和合规
+  compliance:
+    gdpr_compliant: true
+    hipaa_equivalent: true
+    iso27001_certified: true
+    cyber_essentials_plus: true
+  
+  # 高级访问控制
+  access_control:
+    role_based_access: true
+    attribute_based_access: true
+    zero_trust_architecture: true
+    privileged_access_management: true
+  
+  # 安全监控
+  security_monitoring:
+    siem_integration: true
+    threat_detection: true
+    vulnerability_scanning: true
+    penetration_testing: "quarterly"
+  
+  # 数据加密
+  encryption:
+    at_rest: "AES-256"
+    in_transit: "TLS 1.3"
+    end_to_end: true
+    key_management: "HSM"
+
+# 用户体验优化
+user_experience:
+  # 多语言支持
+  languages:
+    default: "en-GB"
+    supported: ["en-GB", "ar-SA", "ru-RU", "zh-CN", "fr-FR", "de-DE", "es-ES", "ja-JP"]
+    professional_translation: true
+  
+  # 辅助功能
+  accessibility:
+    wcag_2_1_aa_compliant: true
+    screen_reader_optimized: true
+    voice_navigation: true
+    high_contrast_themes: true
+  
+  # 个性化
+  personalization:
+    ai_powered_recommendations: true
+    adaptive_interface: true
+    preference_learning: true
+    contextual_content: true
+
+# 高级监控
+monitoring:
+  # 服务级别协议
+  sla:
+    uptime_guarantee: 99.95
+    response_time_guarantee: 100  # 毫秒
+    support_response: "immediate"
+    data_recovery_time: 60  # 分钟
+  
+  # 业务监控
+  business_monitoring:
+    real_time_revenue: true
+    patient_satisfaction: true
+    operational_efficiency: true
+    clinical_outcomes: true
+  
+  # 性能监控
+  performance_monitoring:
+    application_performance: true
+    database_performance: true
+    network_monitoring: true
+    user_experience_monitoring: true
+
+# 专属支持服务
+support:
+  # 白金级支持
+  platinum_support:
+    dedicated_account_manager: true
+    technical_architect: true
+    clinical_advisor: true
+    24x7_hotline: "+44 800 123 4567"
+  
+  # 培训和咨询
+  training:
+    staff_certification_program: true
+    clinical_workflow_optimization: true
+    technology_adoption_support: true
+    change_management: true
+  
+  # 定制开发
+  custom_development:
+    bespoke_features: true
+    api_development: true
+    integration_support: true
+    mobile_app_customization: true 

@@ -1,0 +1,505 @@
+# Healthcare SaaS Provider Demo Configuration
+# 示例：医疗技术SaaS服务商 - 白标解决方案
+
+tenant:
+  id: "healthtech_saas_provider"
+  name: "MedFlow Healthcare Solutions"
+  type: "saas_provider"
+  domain: "medflow.tech"
+  
+  # 订阅信息 - B2B SaaS模式
+  subscription:
+    tier: "Enterprise_Partner"
+    monthly_cost: 2499.00  # 白标合作伙伴费用
+    currency: "GBP"
+    billing_cycle: "monthly"
+    revenue_share_percentage: 20  # 与下游客户的收入分成
+    minimum_commitment_months: 12
+    
+  # B2B SaaS服务限制
+  limits:
+    max_sub_tenants: 50  # 最多支持50个下游租户
+    max_end_users: 10000  # 总终端用户数
+    max_api_calls_per_month: 1000000  # 100万API调用
+    max_messages_per_month: 100000  # 10万条消息
+    white_label_customization: true
+    reseller_capabilities: true
+    sub_tenant_management: true
+    
+  # 联系信息
+  contact:
+    primary_email: "partnerships@medflow.tech"
+    technical_contact: "tech@medflow.tech"
+    business_development: "bd@medflow.tech"
+    support_manager: "support@medflow.tech"
+    phone: "+44 20 3026 4567"
+    sales_phone: "+44 800 MEDFLOW"
+    address:
+      street: "Tech Hub, 123 Innovation Drive"
+      city: "Cambridge"
+      postcode: "CB4 0WS"
+      country: "United Kingdom"
+
+# 白标品牌配置
+branding:
+  # 可完全定制的白标方案
+  white_label_enabled: true
+  custom_domain_support: true
+  ssl_certificate_management: true
+  
+  # 默认MedFlow品牌
+  default_branding:
+    logo_url: "https://cdn.medflow.tech/logos/medflow-logo.svg"
+    favicon_url: "https://cdn.medflow.tech/favicons/medflow-favicon.ico"
+    colors:
+      primary: "#0066cc"      # 科技蓝
+      secondary: "#4a90e2"    # 浅蓝
+      accent: "#00c851"       # 成功绿
+      warning: "#ffbb33"      # 警告橙
+      error: "#ff4444"        # 错误红
+      background: "#f8f9fa"   # 浅灰背景
+      text: "#212529"         # 深色文本
+    fonts:
+      primary: "Inter, sans-serif"
+      secondary: "Roboto, sans-serif"
+  
+  # 白标定制选项
+  customization_options:
+    logo_placement: ["header", "footer", "dashboard"]
+    color_scheme_override: true
+    custom_css_injection: true
+    favicon_customization: true
+    email_template_branding: true
+    whatsapp_business_profile: true
+    
+  # CSS框架
+  custom_css_framework: |
+    :root {
+      --primary-color: var(--tenant-primary, #0066cc);
+      --secondary-color: var(--tenant-secondary, #4a90e2);
+      --accent-color: var(--tenant-accent, #00c851);
+    }
+    
+    .white-label-header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    }
+    
+    .branded-card {
+      border-top: 4px solid var(--primary-color);
+      box-shadow: 0 2px 12px rgba(0, 102, 204, 0.1);
+    }
+
+# SaaS平台配置
+saas_platform_config:
+  # 多租户架构
+  multi_tenancy:
+    isolation_level: "schema"  # 数据库schema隔离
+    cross_tenant_analytics: false
+    tenant_migration_support: true
+    backup_strategy: "per_tenant"
+    
+  # 子租户管理
+  sub_tenant_management:
+    self_service_onboarding: true
+    automated_provisioning: true
+    tenant_lifecycle_management: true
+    usage_metering: true
+    billing_integration: true
+    
+  # API管理
+  api_management:
+    rate_limiting_per_tenant: true
+    api_versioning: true
+    webhook_management: true
+    developer_portal: true
+    api_analytics: true
+    
+  # 扩展性配置
+  scalability:
+    auto_scaling: true
+    load_balancing: true
+    cdn_distribution: true
+    cache_optimization: true
+    database_sharding: true
+
+# 产品配置 - 多产品线
+product_offerings:
+  # 核心NHS等候时间产品
+  nhs_waiting_times:
+    enabled: true
+    white_label_name: "WaitTime Pro"
+    features:
+      - "实时等候时间监控"
+      - "智能提醒引擎"
+      - "患者选择优化"
+      - "多渠道通知"
+    pricing_tiers:
+      starter: 19.99
+      professional: 49.99
+      enterprise: 149.99
+    
+  # 通用患者通信平台
+  patient_engagement:
+    enabled: true
+    white_label_name: "PatientConnect Pro"
+    features:
+      - "WhatsApp Business集成"
+      - "SMS和邮件营销"
+      - "预约管理"
+      - "患者门户"
+    pricing_tiers:
+      basic: 29.99
+      plus: 79.99
+      premium: 199.99
+  
+  # 医疗分析和报告
+  healthcare_analytics:
+    enabled: true
+    white_label_name: "HealthInsights"
+    features:
+      - "实时仪表板"
+      - "预测分析"
+      - "性能基准"
+      - "合规报告"
+    pricing_tiers:
+      standard: 99.99
+      advanced: 299.99
+      enterprise: 999.99
+  
+  # API即服务
+  api_as_a_service:
+    enabled: true
+    white_label_name: "MedAPI Gateway"
+    features:
+      - "医疗数据API"
+      - "集成服务"
+      - "实时同步"
+      - "开发者工具"
+    pricing_model: "usage_based"
+
+# 合作伙伴管理
+partner_management:
+  # 渠道合作伙伴分类
+  partner_tiers:
+    bronze:
+      revenue_share: 15
+      marketing_support: "basic"
+      technical_support: "email"
+      training_included: false
+      minimum_monthly_revenue: 500
+      
+    silver:
+      revenue_share: 20
+      marketing_support: "co_marketing"
+      technical_support: "phone_email"
+      training_included: true
+      minimum_monthly_revenue: 2000
+      
+    gold:
+      revenue_share: 25
+      marketing_support: "dedicated_manager"
+      technical_support: "priority_24x7"
+      training_included: true
+      custom_features: true
+      minimum_monthly_revenue: 10000
+      
+    platinum:
+      revenue_share: 30
+      marketing_support: "joint_gtm"
+      technical_support: "dedicated_team"
+      training_included: true
+      custom_development: true
+      exclusive_territories: true
+      minimum_monthly_revenue: 50000
+  
+  # 合作伙伴支持服务
+  partner_support:
+    onboarding_program: true
+    certification_program: true
+    marketing_kit: true
+    sales_enablement: true
+    technical_documentation: true
+    sandbox_environment: true
+
+# 高级通知和集成
+notifications:
+  # 多品牌WhatsApp支持
+  whatsapp:
+    enabled: true
+    multi_business_account: true
+    brand_isolation: true
+    template_management: true
+    flow_customization: true
+    
+    # 白标消息模板
+    white_label_templates:
+      welcome_template: |
+        🏥 Welcome to {brand_name}!
+        
+        We're here to help you manage your healthcare journey more effectively.
+        
+        Our services include:
+        📊 Real-time health data
+        📱 Instant notifications
+        🔔 Personalized alerts
+        ⚙️ Easy preference management
+        
+        How can we assist you today?
+      
+      alert_template: |
+        📢 *Health Alert from {brand_name}*
+        
+        {alert_message}
+        
+        📅 Date: {date}
+        🏥 Provider: {provider}
+        📊 Current Status: {status}
+        
+        {action_buttons}
+      
+      appointment_template: |
+        📅 *Appointment Update - {brand_name}*
+        
+        {appointment_details}
+        
+        Need to make changes? Just reply to this message.
+  
+  # 邮件白标支持
+  email:
+    enabled: true
+    custom_domains: true
+    template_customization: true
+    brand_compliance: true
+    
+    white_label_templates:
+      partner_onboarding: "partner_welcome.html"
+      sub_tenant_setup: "tenant_activation.html"
+      usage_report: "monthly_usage_report.html"
+
+# 数据和分析
+analytics_and_reporting:
+  # 多层次分析
+  analytics_levels:
+    platform_level:
+      - "总体平台性能"
+      - "合作伙伴表现"
+      - "产品使用统计"
+      - "收入分析"
+    
+    partner_level:
+      - "合作伙伴仪表板"
+      - "客户获取成本"
+      - "客户生命周期价值"
+      - "产品采用率"
+    
+    end_user_level:
+      - "用户参与度"
+      - "功能使用率"
+      - "满意度评分"
+      - "支持工单分析"
+  
+  # 实时仪表板
+  real_time_dashboards:
+    platform_overview: true
+    partner_performance: true
+    system_health: true
+    financial_metrics: true
+  
+  # 自动化报告
+  automated_reporting:
+    partner_monthly_reports: true
+    usage_billing_reports: true
+    compliance_reports: true
+    performance_benchmarks: true
+
+# 计费和收入管理
+billing_and_revenue:
+  # 多层级计费
+  billing_models:
+    platform_subscription: "fixed_monthly"
+    partner_revenue_share: "percentage"
+    usage_based_pricing: "api_calls"
+    premium_features: "add_on_pricing"
+    
+  # 自动化计费
+  automated_billing:
+    invoice_generation: true
+    payment_processing: true
+    dunning_management: true
+    revenue_recognition: true
+    
+  # 收入分享
+  revenue_sharing:
+    automatic_calculation: true
+    transparent_reporting: true
+    monthly_payouts: true
+    tax_handling: true
+
+# 技术架构
+technical_architecture:
+  # 微服务架构
+  microservices:
+    user_management_service: true
+    tenant_management_service: true
+    notification_service: true
+    analytics_service: true
+    billing_service: true
+    integration_service: true
+    
+  # 数据架构
+  data_architecture:
+    multi_tenant_database: true
+    data_isolation: "schema_based"
+    backup_strategy: "incremental_per_tenant"
+    disaster_recovery: "cross_region"
+    
+  # API架构
+  api_architecture:
+    restful_apis: true
+    graphql_support: true
+    websocket_support: true
+    webhook_management: true
+    rate_limiting: "per_tenant"
+    
+  # 安全架构
+  security_architecture:
+    tenant_isolation: true
+    data_encryption: "end_to_end"
+    access_control: "rbac_abac"
+    compliance: ["GDPR", "HIPAA_equivalent", "SOC2"]
+
+# 开发者生态系统
+developer_ecosystem:
+  # 开发者门户
+  developer_portal:
+    api_documentation: true
+    code_samples: true
+    sdks_libraries: ["Python", "JavaScript", "PHP", "C#"]
+    testing_tools: true
+    
+  # 沙箱环境
+  sandbox:
+    full_feature_access: true
+    test_data_generation: true
+    webhook_testing: true
+    performance_testing: true
+    
+  # 开发者支持
+  developer_support:
+    community_forum: true
+    office_hours: "weekly"
+    technical_webinars: true
+    hackathons: true
+
+# 市场和销售
+go_to_market:
+  # 营销策略
+  marketing_strategy:
+    content_marketing: true
+    thought_leadership: true
+    partner_co_marketing: true
+    trade_shows: true
+    
+  # 销售支持
+  sales_enablement:
+    demo_environments: true
+    roi_calculators: true
+    case_studies: true
+    reference_customers: true
+    
+  # 渠道管理
+  channel_management:
+    partner_portal: true
+    deal_registration: true
+    lead_distribution: true
+    channel_incentives: true
+
+# 合规和认证
+compliance_and_certifications:
+  # 行业认证
+  certifications:
+    iso27001: true
+    soc2_type2: true
+    cyber_essentials_plus: true
+    gdpr_compliant: true
+    
+  # 医疗行业合规
+  healthcare_compliance:
+    nhs_digital_approved: true
+    dcb0129_compliant: true  # NHS Clinical Risk Management
+    dcb0160_compliant: true  # NHS Business Continuity Planning
+    hl7_fhir_support: true
+    
+  # 数据治理
+  data_governance:
+    data_lineage_tracking: true
+    consent_management: true
+    right_to_be_forgotten: true
+    data_portability: true
+
+# 支持和服务
+support_and_services:
+  # 分层支持模式
+  support_tiers:
+    community_support:
+      channels: ["forum", "documentation"]
+      response_time: "best_effort"
+      coverage: "business_hours"
+      
+    professional_support:
+      channels: ["email", "chat"]
+      response_time: "4_hours"
+      coverage: "business_hours"
+      
+    enterprise_support:
+      channels: ["phone", "email", "chat", "dedicated_slack"]
+      response_time: "1_hour"
+      coverage: "24x7"
+      dedicated_csm: true
+      
+    white_glove_support:
+      channels: ["all_channels", "on_site"]
+      response_time: "15_minutes"
+      coverage: "24x7"
+      dedicated_team: true
+      custom_sla: true
+  
+  # 专业服务
+  professional_services:
+    implementation_consulting: true
+    custom_development: true
+    integration_services: true
+    training_and_certification: true
+    change_management: true
+
+# 创新和路线图
+innovation_roadmap:
+  # 新兴技术
+  emerging_technologies:
+    artificial_intelligence: true
+    machine_learning: true
+    natural_language_processing: true
+    blockchain_integration: false  # 未来考虑
+    iot_device_integration: true
+    
+  # 产品路线图
+  product_roadmap:
+    q1_2024:
+      - "AI-powered patient insights"
+      - "Enhanced mobile apps"
+      - "Voice assistant integration"
+    
+    q2_2024:
+      - "Predictive analytics platform"
+      - "Advanced reporting suite"
+      - "Multi-language support expansion"
+    
+    q3_2024:
+      - "IoT device integration"
+      - "Advanced workflow automation"
+      - "Enhanced security features"
+    
+    q4_2024:
+      - "Global expansion features"
+      - "Advanced AI capabilities"
+      - "Next-gen user interface" 

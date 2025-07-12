@@ -1,0 +1,368 @@
+# GP Practice Demo Configuration
+# 示例：伦敦全科医生诊所
+
+tenant:
+  id: "gp_london_demo"
+  name: "London Primary Care Practice"
+  type: "gp_practice"
+  domain: "londonpcp.nhs.uk"
+  
+  # 订阅信息
+  subscription:
+    tier: "Premium"
+    monthly_cost: 299.00
+    currency: "GBP"
+    billing_cycle: "monthly"
+    trial_period_days: 30
+    
+  # 服务限制
+  limits:
+    max_users: 1000
+    max_alerts_per_month: 10000
+    max_api_calls_per_month: 100000
+    max_messages_per_month: 5000
+    max_data_sources: 10
+    
+  # 联系信息
+  contact:
+    primary_email: "admin@londonpcp.nhs.uk"
+    billing_email: "finance@londonpcp.nhs.uk"
+    technical_contact: "it@londonpcp.nhs.uk"
+    phone: "+44 20 7946 0958"
+    address:
+      street: "123 Healthcare Street"
+      city: "London"
+      postcode: "SW1A 1AA"
+      country: "United Kingdom"
+
+# 品牌定制
+branding:
+  logo_url: "https://cdn.londonpcp.nhs.uk/logo.png"
+  favicon_url: "https://cdn.londonpcp.nhs.uk/favicon.ico"
+  colors:
+    primary: "#005EB8"  # NHS蓝色
+    secondary: "#41B6E6"  # NHS浅蓝
+    accent: "#FFB81C"   # NHS黄色
+    background: "#FFFFFF"
+    text: "#212B32"
+  fonts:
+    primary: "Frutiger, Arial, sans-serif"  # NHS字体
+    secondary: "Arial, sans-serif"
+  custom_css: |
+    .nhs-header {
+      background: linear-gradient(90deg, #005EB8 0%, #41B6E6 100%);
+    }
+    .alert-card {
+      border-left: 4px solid #005EB8;
+    }
+
+# NHS特定配置
+nhs_config:
+  # 支持的专科
+  specialties:
+    - "Cardiology"
+    - "Dermatology" 
+    - "Gastroenterology"
+    - "General Surgery"
+    - "Gynaecology"
+    - "Ophthalmology"
+    - "Orthopaedics"
+    - "Urology"
+    - "ENT"
+    - "Plastic Surgery"
+  
+  # 服务的地理区域
+  catchment_area:
+    - "Westminster"
+    - "Camden"
+    - "Islington"
+    - "Tower Hamlets"
+  
+  # CCG/ICB信息
+  commissioning:
+    ccg_code: "09A"
+    ccg_name: "NHS Central and North West London CCG"
+    icb_code: "QRV"
+    icb_name: "North West London ICB"
+  
+  # 数据更新频率
+  data_refresh:
+    rtt_data: "daily"  # 每日更新RTT数据
+    waiting_lists: "hourly"  # 每小时更新等候列表
+    provider_capacity: "weekly"  # 每周更新提供者容量
+
+# 通知配置
+notifications:
+  # WhatsApp Business设置
+  whatsapp:
+    enabled: true
+    business_account_id: "123456789012345"
+    phone_number_id: "109876543210987"
+    display_name: "London Primary Care"
+    
+    # WhatsApp Flow配置
+    flows:
+      patient_registration:
+        flow_id: "123456789"
+        version: "1.0"
+        name: "Patient Registration Flow"
+      
+      appointment_booking:
+        flow_id: "987654321"
+        version: "2.1" 
+        name: "Appointment Booking Flow"
+      
+      waiting_time_alert:
+        flow_id: "456789123"
+        version: "1.5"
+        name: "Waiting Time Alert Flow"
+    
+    # 消息模板
+    templates:
+      welcome: |
+        🏥 Welcome to London Primary Care Practice!
+        
+        We'll keep you updated on NHS waiting times for your referrals.
+        
+        Use the menu below to:
+        📋 Check current waiting times
+        📅 Book appointments  
+        ⚙️ Manage preferences
+      
+      waiting_time_update: |
+        📊 *Waiting Time Update*
+        
+        {specialty} at {provider}:
+        ⏱️ Current wait: {current_weeks} weeks
+        📈 Change: {change} from last week
+        
+        {recommendation_message}
+      
+      alternative_suggestion: |
+        🔍 *Alternative Options Available*
+        
+        Shorter waiting times found:
+        
+        {alternatives_list}
+        
+        Would you like to explore these options?
+  
+  # SMS设置 (后备)
+  sms:
+    enabled: true
+    provider: "twilio"
+    sender_id: "LondonPCP"
+    
+    templates:
+      alert: "NHS Alert: {specialty} waiting time at {provider} is now {weeks} weeks. {action_required}"
+      reminder: "Appointment reminder: {date} at {time} for {specialty}. Location: {address}"
+  
+  # Email设置
+  email:
+    enabled: true
+    from_address: "alerts@londonpcp.nhs.uk"
+    from_name: "London Primary Care Practice"
+    signature: |
+      ---
+      London Primary Care Practice
+      123 Healthcare Street, London SW1A 1AA
+      Phone: 020 7946 0958
+      Web: www.londonpcp.nhs.uk
+
+# 提醒规则配置
+alert_rules:
+  # 基础等候时间提醒
+  waiting_time_threshold:
+    enabled: true
+    threshold_weeks: 18
+    priority: "high"
+    message: "Waiting time has exceeded 18 weeks - patient choice options available"
+  
+  # 快速改善提醒
+  rapid_improvement:
+    enabled: true
+    improvement_threshold: 4  # 4周改善
+    priority: "medium"
+    message: "Significant improvement in waiting times - consider rebooking"
+  
+  # 恶化预警
+  deterioration_warning:
+    enabled: true
+    deterioration_threshold: 2  # 2周恶化
+    priority: "medium"
+    message: "Waiting times increasing - monitor closely"
+  
+  # 替代选项
+  alternative_provider:
+    enabled: true
+    max_distance_miles: 25
+    max_additional_weeks: -2  # 至少短2周
+    priority: "low"
+    message: "Shorter waiting times available at nearby providers"
+
+# 数据源配置
+data_sources:
+  nhs_england_rtt:
+    enabled: true
+    url: "https://www.england.nhs.uk/statistics/statistical-work-areas/rtt-waiting-times/"
+    update_frequency: "daily"
+    retention_days: 365
+    
+    # 数据质量检查
+    quality_checks:
+      missing_data_threshold: 5  # 5%缺失数据告警
+      outlier_detection: true
+      historical_comparison: true
+  
+  local_provider_data:
+    enabled: true
+    sources:
+      - name: "Imperial College Healthcare NHS Trust"
+        api_endpoint: "https://api.imperial.nhs.uk/rtt"
+        auth_type: "bearer_token"
+      - name: "Central and North West London NHS Foundation Trust"
+        api_endpoint: "https://api.cnwl.nhs.uk/waiting-times"
+        auth_type: "api_key"
+
+# 分析和报告
+analytics:
+  # 数据保留策略
+  retention:
+    raw_data_days: 1095  # 3年
+    aggregated_data_days: 1825  # 5年
+    user_activity_days: 730  # 2年
+  
+  # 报告生成
+  reports:
+    monthly_summary:
+      enabled: true
+      recipients: ["admin@londonpcp.nhs.uk", "clinical.lead@londonpcp.nhs.uk"]
+      format: "pdf"
+    
+    weekly_trends:
+      enabled: true
+      recipients: ["admin@londonpcp.nhs.uk"]
+      format: "email"
+    
+    patient_outcomes:
+      enabled: true
+      frequency: "quarterly"
+      recipients: ["clinical.governance@londonpcp.nhs.uk"]
+      format: "pdf"
+
+# 集成配置
+integrations:
+  # 患者管理系统集成
+  pms_integration:
+    enabled: true
+    system: "EMIS Web"
+    api_endpoint: "https://api.emisweb.com/v1"
+    sync_frequency: "real-time"
+    
+    # 同步的数据类型
+    sync_data:
+      - "patient_demographics"
+      - "referral_status"
+      - "appointment_history"
+  
+  # 电子推荐服务 (e-RS)
+  ers_integration:
+    enabled: true
+    endpoint: "https://api.ers.nhs.uk/v1"
+    auto_update_referrals: true
+    
+  # NHS Login集成
+  nhs_login:
+    enabled: true
+    client_id: "nhs_login_client_id"
+    redirect_uri: "https://londonpcp.nhs.uk/auth/callback"
+
+# 安全配置
+security:
+  # 数据保护
+  data_protection:
+    encryption_at_rest: true
+    encryption_in_transit: true
+    gdpr_compliant: true
+    
+    # 患者数据处理
+    patient_data:
+      pseudonymization: true
+      retention_policy: "7_years"  # NHS记录保留要求
+      access_logging: true
+  
+  # 访问控制
+  access_control:
+    mfa_required: true
+    session_timeout_minutes: 30
+    password_policy:
+      min_length: 12
+      require_special_chars: true
+      require_numbers: true
+      require_uppercase: true
+  
+  # 审计
+  audit:
+    log_all_access: true
+    log_data_changes: true
+    retention_days: 2555  # 7年
+    export_format: "csv"
+
+# 用户体验配置
+user_experience:
+  # 语言支持
+  languages:
+    default: "en-GB"
+    supported: ["en-GB", "hi-IN", "ur-PK", "ar-SA", "pl-PL"]
+  
+  # 无障碍功能
+  accessibility:
+    screen_reader_support: true
+    high_contrast_mode: true
+    font_size_adjustment: true
+    keyboard_navigation: true
+  
+  # 患者偏好
+  patient_preferences:
+    communication_channels: ["whatsapp", "sms", "email"]
+    notification_timing: ["morning", "afternoon", "evening"]
+    frequency_options: ["immediate", "daily", "weekly"]
+
+# 监控和性能
+monitoring:
+  # 性能指标
+  performance_targets:
+    api_response_time_ms: 200
+    page_load_time_ms: 1500
+    uptime_percentage: 99.9
+  
+  # 业务指标
+  business_metrics:
+    patient_engagement_rate: 85
+    referral_completion_rate: 95
+    user_satisfaction_score: 4.5
+  
+  # 告警设置
+  alerts:
+    high_usage: true
+    performance_degradation: true
+    security_incidents: true
+    data_quality_issues: true
+
+# 培训和支持
+support:
+  # 用户培训
+  training:
+    staff_onboarding: true
+    patient_education: true
+    documentation_url: "https://docs.londonpcp.nhs.uk"
+  
+  # 技术支持
+  technical_support:
+    support_hours: "24/7"
+    escalation_levels: 3
+    response_time_sla:
+      critical: "15_minutes"
+      high: "1_hour"
+      medium: "4_hours"
+      low: "1_business_day" 

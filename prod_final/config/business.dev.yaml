@@ -1,0 +1,128 @@
+name: "NHS Alert System"
+version: "1.0.0"
+environment: "dev"
+debug: true
+
+# Database Configuration
+database:
+  type: "postgresql"
+  host: "${DB_HOST:localhost}"
+  port: "${DB_PORT:5432}"
+  name: "${DB_NAME:nhs_alert_dev}"
+  user: "${DB_USER:postgres}"
+  password: "${DB_PASSWORD:}"
+  pool_size: 5
+  max_overflow: 10
+  echo: true  # SQL logging in dev
+
+# API Configuration
+apis:
+  rate_limit:
+    requests_per_minute: 1000  # Higher limit for dev
+    burst_limit: 50
+  jwt_secret: "${JWT_SECRET:dev-secret-key-change-in-prod}"
+  cors:
+    allow_origins: ["http://localhost:3000", "http://localhost:8080"]
+    allow_credentials: true
+
+# Notification Services
+notifications:
+  whatsapp:
+    enabled: true
+    api_url: "https://graph.facebook.com/v18.0"
+    phone_number_id: "${WHATSAPP_PHONE_ID:}"
+    access_token: "${WHATSAPP_ACCESS_TOKEN:}"
+    webhook_verify_token: "${WHATSAPP_WEBHOOK_TOKEN:dev-webhook-token}"
+  
+  sms:
+    enabled: false  # Disabled in dev to avoid costs
+    provider: "twilio"
+    twilio:
+      account_sid: "${TWILIO_ACCOUNT_SID:}"
+      auth_token: "${TWILIO_AUTH_TOKEN:}"
+      from_number: "${TWILIO_FROM_NUMBER:}"
+  
+  email:
+    enabled: true
+    provider: "smtp"
+    smtp_host: "${SMTP_HOST:localhost}"
+    smtp_port: "${SMTP_PORT:1025}"  # MailHog for dev
+    smtp_user: "${SMTP_USER:}"
+    smtp_password: "${SMTP_PASSWORD:}"
+    use_tls: false
+    from_email: "${FROM_EMAIL:noreply@nhs-alert-dev.local}"
+
+# Business Rules
+business_rules:
+  max_alerts_per_user_per_day: 50  # Higher for testing
+  alert_cooldown_minutes: 5  # Shorter for testing
+  default_subscription_tier: "free"
+  
+  # NHS specific rules
+  nhs:
+    urgent_specialties: ["120", "400", "401"]  # ENT, Neurology, Oncology
+    urgent_threshold_weeks: 4
+    standard_threshold_weeks: 18
+    long_wait_threshold_weeks: 52
+    
+    data_refresh_interval_hours: 1  # More frequent in dev
+    max_travel_distance_km: 200
+    
+    # Testing data sources
+    test_data_enabled: true
+    mock_nhs_api: true
+
+# Monitoring and Logging
+monitoring:
+  sentry_dsn: "${SENTRY_DSN:}"
+  log_level: "DEBUG"
+  metrics_enabled: true
+  performance_monitoring: true
+  
+  # Development specific
+  sql_echo: true
+  request_logging: true
+  detailed_errors: true
+
+# Background Tasks
+background_tasks:
+  broker_url: "${REDIS_URL:redis://localhost:6379/0}"
+  result_backend: "${REDIS_URL:redis://localhost:6379/0}"
+  task_always_eager: true  # Synchronous tasks in dev
+  
+  # ETL scheduling (more frequent for dev)
+  etl_schedule:
+    nhs_data_check: "*/30 * * * *"  # Every 30 minutes
+    alert_processing: "*/5 * * * *"  # Every 5 minutes
+    data_cleanup: "0 2 * * *"  # Daily at 2 AM
+
+# Development Features
+development:
+  auto_reload: true
+  show_docs: true
+  enable_profiling: true
+  mock_external_apis: true
+  
+  # Test users
+  create_test_users: true
+  test_data_generator: true
+  
+  # Local file storage for development
+  file_storage:
+    type: "local"
+    path: "./dev_storage"
+  
+  # Development database seeding
+  seed_database: true
+  sample_data_size: 100
+
+# Security (relaxed for development)
+security:
+  password_min_length: 6
+  session_timeout_minutes: 480  # 8 hours
+  max_login_attempts: 10
+  lockout_duration_minutes: 5
+  
+  # CORS settings for development
+  cors_enabled: true
+  allow_credentials: true 
