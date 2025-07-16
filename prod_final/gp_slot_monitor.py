@@ -130,6 +130,7 @@ class GPSlotMonitor:
                 max_distance_km INTEGER DEFAULT 10,
                 enable_urgent_alerts BOOLEAN DEFAULT 1,
                 enable_routine_alerts BOOLEAN DEFAULT 1,
+                status TEXT DEFAULT 'active',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (user_id, practice_code),

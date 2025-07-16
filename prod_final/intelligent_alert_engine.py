@@ -1,28 +1,29 @@
 #!/usr/bin/env python3
 """
-Intelligent Alert Engine - NHS Alert System
-智能提醒引擎：基于规则的个性化NHS等候时间提醒
+智能提醒引擎
+提供NHS等候时间的智能提醒功能
 """
 
-import json
-import logging
 import sqlite3
+import json
+import asyncio
+import logging
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Tuple
-import statistics
+from typing import Dict, List, Optional
 from dataclasses import dataclass
+from geographic_service import GeographicService
 
 logger = logging.getLogger(__name__)
 
 @dataclass
 class AlertRule:
-    """提醒规则定义"""
+    """提醒规则"""
     rule_id: str
     name: str
     condition_type: str  # threshold, change, comparison, prediction
     parameters: Dict
-    priority: int  # 1-5, 5最高
-    frequency_hours: int  # 提醒频率（小时）
+    priority: int = 1
+    frequency_hours: int = 24
     is_active: bool = True
 
 @dataclass
@@ -35,8 +36,8 @@ class AlertEvent:
     data: Dict
     priority: int
     created_at: datetime
+    status: str = 'pending'
     sent_at: Optional[datetime] = None
-    status: str = 'pending'  # pending, sent, failed
 
 class IntelligentAlertEngine:
     """智能提醒引擎"""
@@ -45,10 +46,13 @@ class IntelligentAlertEngine:
         self.config = config_manager
         self.whatsapp_service = whatsapp_service
         self.db_path = self.config.get('database_url', 'sqlite:///nhs_alerts.db').replace('sqlite:///', '')
+        self.geo_service = GeographicService(self.db_path)
         
         # 初始化默认提醒规则
         self.default_rules = self._create_default_rules()
         self._initialize_database()
+        self._monitor_interval_seconds = self.config.get('alert_monitor_interval', 300)
+        self._monitoring_task: Optional['asyncio.Task'] = None
     
     def _create_default_rules(self) -> List[AlertRule]:
         """创建默认提醒规则"""
@@ -78,43 +82,19 @@ class IntelligentAlertEngine:
                 frequency_hours=24
             ),
             AlertRule(
-                rule_id="shorter_alternative_found",
-                name="发现更短等候选择",
+                rule_id="shorter_alternatives",
+                name="更短等候时间替代方案",
                 condition_type="comparison",
-                parameters={"metric": "waiting_weeks", "operator": "<", "improvement_weeks": 4},
-                priority=5,
-                frequency_hours=24
-            ),
-            AlertRule(
-                rule_id="regional_outlier",
-                name="区域等候时间异常",
-                condition_type="comparison",
-                parameters={"metric": "waiting_weeks", "comparison": "regional_median", "threshold": 1.5},
-                priority=2,
-                frequency_hours=168
-            ),
-            AlertRule(
-                rule_id="trend_prediction",
-                name="等候时间趋势预测",
-                condition_type="prediction",
-                parameters={"metric": "waiting_weeks", "trend_weeks": 8, "prediction_threshold": 3},
+                parameters={"improvement_weeks": 4},
                 priority=3,
                 frequency_hours=168
             ),
             AlertRule(
-                rule_id="capacity_alert",
-                name="医院容量提醒", 
-                condition_type="threshold",
-                parameters={"metric": "patients_waiting", "operator": ">", "value": 1000},
-                priority=2,
-                frequency_hours=168
-            ),
-            AlertRule(
-                rule_id="specialty_bottleneck",
-                name="专科瓶颈提醒",
+                rule_id="regional_outlier",
+                name="地区异常提醒",
                 condition_type="comparison",
-                parameters={"metric": "waiting_weeks", "comparison": "specialty_average", "threshold": 2.0},
-                priority=4,
+                parameters={"outlier_threshold": 2.0},  # 超过平均值2倍标准差
+                priority=2,
                 frequency_hours=72
             )
         ]
@@ -132,41 +112,10 @@ class IntelligentAlertEngine:
                 name TEXT NOT NULL,
                 condition_type TEXT NOT NULL,
                 parameters TEXT NOT NULL,
-                priority INTEGER NOT NULL,
-                frequency_hours INTEGER NOT NULL,
+                priority INTEGER DEFAULT 1,
+                frequency_hours INTEGER DEFAULT 24,
                 is_active BOOLEAN DEFAULT 1,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-            ''')
-            
-            # 创建提醒事件表
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS alert_events (
-                event_id TEXT PRIMARY KEY,
-                user_id TEXT NOT NULL,
-                rule_id TEXT NOT NULL,
-                alert_type TEXT NOT NULL,
-                data TEXT NOT NULL,
-                priority INTEGER NOT NULL,
-                status TEXT DEFAULT 'pending',
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                sent_at TIMESTAMP NULL,
-                FOREIGN KEY (rule_id) REFERENCES alert_rules (rule_id)
-            )
-            ''')
-            
-            # 创建数据历史表（用于趋势分析）
-            cursor.execute('''
-            CREATE TABLE IF NOT EXISTS nhs_data_history (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                provider_name TEXT NOT NULL,
-                specialty_name TEXT NOT NULL,
-                waiting_time_weeks INTEGER,
-                patients_waiting INTEGER,
-                data_date DATE NOT NULL,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                UNIQUE(provider_name, specialty_name, data_date)
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
             ''')
             
@@ -178,24 +127,36 @@ class IntelligentAlertEngine:
                 rule_id TEXT NOT NULL,
                 last_alert_time TIMESTAMP NOT NULL,
                 alert_count INTEGER DEFAULT 1,
-                UNIQUE(user_id, rule_id)
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+            ''')
+            
+            # 创建提醒事件表
+            cursor.execute('''
+            CREATE TABLE IF NOT EXISTS alert_events (
+                event_id TEXT PRIMARY KEY,
+                user_id TEXT NOT NULL,
+                rule_id TEXT NOT NULL,
+                alert_type TEXT NOT NULL,
+                data TEXT NOT NULL,
+                priority INTEGER DEFAULT 1,
+                status TEXT DEFAULT 'pending',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                sent_at TIMESTAMP
             )
             ''')
             
             conn.commit()
+            conn.close()
             
             # 插入默认规则
             self._insert_default_rules()
             
-            conn.close()
-            logger.info("提醒引擎数据库初始化完成")
-            
         except Exception as e:
-            logger.error(f"初始化提醒引擎数据库失败: {e}")
-            raise
+            logger.error(f"初始化数据库失败: {e}")
     
     def _insert_default_rules(self):
-        """插入默认提醒规则"""
+        """插入默认规则"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
@@ -221,35 +182,53 @@ class IntelligentAlertEngine:
         except Exception as e:
             logger.error(f"插入默认规则失败: {e}")
     
-    def run_alert_checks(self) -> List[AlertEvent]:
-        """运行所有提醒检查"""
+    async def start_monitoring(self):
+        """开始监控"""
+        if self._monitoring_task and not self._monitoring_task.done():
+            return
+        
+        self._monitoring_task = asyncio.create_task(self._monitor_loop())
+        logger.info("智能提醒监控已启动")
+    
+    async def stop_monitoring(self):
+        """停止监控"""
+        if self._monitoring_task:
+            self._monitoring_task.cancel()
+            try:
+                await self._monitoring_task
+            except asyncio.CancelledError:
+                pass
+        logger.info("智能提醒监控已停止")
+    
+    async def _monitor_loop(self):
+        """监控循环"""
         try:
-            alerts = []
-            active_users = self._get_active_users()
-            active_rules = self._get_active_rules()
+            while True:
+                await self._check_all_alerts()
+                await asyncio.sleep(self._monitor_interval_seconds)
+        except asyncio.CancelledError:
+            raise
+        except Exception as e:
+            logger.error(f"监控循环错误: {e}")
+            await asyncio.sleep(60)  # 等待1分钟后重试
+    
+    async def _check_all_alerts(self):
+        """检查所有用户的提醒"""
+        try:
+            users = self._get_active_users()
+            logger.info(f"检查 {len(users)} 个活跃用户的提醒")
             
-            logger.info(f"开始检查提醒: {len(active_users)}个用户, {len(active_rules)}个规则")
+            all_alerts = []
+            for user in users:
+                user_alerts = await self._check_user_alerts(user)
+                all_alerts.extend(user_alerts)
             
-            for user in active_users:
-                for rule in active_rules:
-                    # 检查是否需要执行这个规则
-                    if self._should_execute_rule(user['user_id'], rule):
-                        try:
-                            alert_events = self._execute_rule(user, rule)
-                            alerts.extend(alert_events)
-                        except Exception as e:
-                            logger.error(f"执行规则 {rule.rule_id} 失败: {e}")
-            
-            # 处理生成的提醒
-            processed_alerts = self._process_alerts(alerts)
-            
-            logger.info(f"提醒检查完成: 生成 {len(alerts)} 个提醒事件, 处理 {len(processed_alerts)} 个")
-            
-            return processed_alerts
+            if all_alerts:
+                processed_alerts = await self._process_alerts(all_alerts)
+                logger.info(f"处理了 {len(processed_alerts)} 个提醒")
             
         except Exception as e:
-            logger.error(f"运行提醒检查失败: {e}")
-            return []
+            logger.error(f"检查提醒失败: {e}")
     
     def _get_active_users(self) -> List[Dict]:
         """获取活跃用户"""
@@ -273,7 +252,7 @@ class IntelligentAlertEngine:
                     'postcode': row[2],
                     'specialty': row[3],
                     'threshold_weeks': row[4],
-                    'radius_km': row[5],
+                    'radius_km': row[5] or 25,
                     'notification_types': json.loads(row[6]) if row[6] else []
                 })
             
@@ -281,6 +260,23 @@ class IntelligentAlertEngine:
             
         except Exception as e:
             logger.error(f"获取活跃用户失败: {e}")
+            return []
+    
+    async def _check_user_alerts(self, user: Dict) -> List[AlertEvent]:
+        """检查单个用户的提醒"""
+        try:
+            alerts = []
+            rules = self._get_active_rules()
+            
+            for rule in rules:
+                if self._should_execute_rule(user['user_id'], rule):
+                    rule_alerts = self._execute_rule(user, rule)
+                    alerts.extend(rule_alerts)
+            
+            return alerts
+            
+        except Exception as e:
+            logger.error(f"检查用户提醒失败: {e}")
             return []
     
     def _get_active_rules(self) -> List[AlertRule]:
@@ -375,7 +371,7 @@ class IntelligentAlertEngine:
             operator = params.get('operator', '>')
             threshold_value = params.get('value', 0)
             
-            # 获取用户相关的医院数据
+            # 获取用户相关的医院数据（基于地理位置过滤）
             hospital_data = self._get_user_hospital_data(user)
             
             for hospital in hospital_data:
@@ -396,20 +392,19 @@ class IntelligentAlertEngine:
                 
                 if condition_met:
                     alert_data = {
-                        'provider_name': hospital.get('provider_name'),
+                        'hospital_name': hospital.get('provider_name'),
                         'specialty_name': hospital.get('specialty_name'),
                         'current_value': current_value,
                         'threshold_value': threshold_value,
                         'metric': metric,
-                        'operator': operator,
-                        'user_threshold': user.get('threshold_weeks', 12)
+                        'distance_km': hospital.get('distance_km')
                     }
                     
                     alert = AlertEvent(
                         event_id=f"alert_{user['user_id']}_{rule.rule_id}_{datetime.now().timestamp()}",
                         user_id=user['user_id'],
                         rule_id=rule.rule_id,
-                        alert_type="threshold_breach",
+                        alert_type="threshold_exceeded",
                         data=alert_data,
                         priority=rule.priority,
                         created_at=datetime.now()
@@ -430,39 +425,35 @@ class IntelligentAlertEngine:
             params = rule.parameters
             metric = params.get('metric', 'waiting_weeks')
             change_type = params.get('change_type', 'increase')
-            min_change = params.get('min_change', 1)
+            min_change = params.get('min_change', 2)
             
-            # 获取历史数据对比
-            changes = self._get_data_changes(user, metric, days=7)
+            # 获取历史对比数据
+            historical_changes = self._get_historical_changes(user, metric)
             
-            for change in changes:
-                change_value = change.get('change', 0)
-                
-                # 检查变化条件
-                condition_met = False
-                if change_type == 'increase' and change_value >= min_change:
+            for change in historical_changes:
+                if change_type == 'increase' and change['change'] >= min_change:
                     condition_met = True
-                elif change_type == 'decrease' and change_value <= -min_change:
+                elif change_type == 'decrease' and change['change'] <= -min_change:
                     condition_met = True
-                elif change_type == 'any' and abs(change_value) >= min_change:
-                    condition_met = True
+                else:
+                    condition_met = False
                 
                 if condition_met:
                     alert_data = {
-                        'provider_name': change.get('provider_name'),
+                        'hospital_name': change.get('hospital_name'),
                         'specialty_name': change.get('specialty_name'),
                         'previous_value': change.get('previous_value'),
                         'current_value': change.get('current_value'),
-                        'change_value': change_value,
-                        'change_type': 'increase' if change_value > 0 else 'decrease',
-                        'metric': metric
+                        'change': change.get('change'),
+                        'change_type': change_type,
+                        'distance_km': change.get('distance_km')
                     }
                     
                     alert = AlertEvent(
                         event_id=f"alert_{user['user_id']}_{rule.rule_id}_{datetime.now().timestamp()}",
                         user_id=user['user_id'],
                         rule_id=rule.rule_id,
-                        alert_type="data_change",
+                        alert_type=f"waiting_time_{change_type}",
                         data=alert_data,
                         priority=rule.priority,
                         created_at=datetime.now()
@@ -483,7 +474,7 @@ class IntelligentAlertEngine:
             params = rule.parameters
             
             if params.get('improvement_weeks'):
-                # 寻找更短等候时间的替代选择
+                # 寻找更短等候时间的替代选择（基于地理位置）
                 alternatives = self._find_shorter_alternatives(user, params.get('improvement_weeks', 4))
                 
                 for alt in alternatives:
@@ -520,31 +511,27 @@ class IntelligentAlertEngine:
         try:
             alerts = []
             params = rule.parameters
-            trend_weeks = params.get('trend_weeks', 8)
-            prediction_threshold = params.get('prediction_threshold', 3)
             
-            # 获取趋势预测
-            predictions = self._predict_waiting_times(user, trend_weeks)
+            # 预测等候时间趋势
+            predictions = self._predict_waiting_times(user, params.get('prediction_weeks', 4))
             
             for prediction in predictions:
-                predicted_change = prediction.get('predicted_change', 0)
-                
-                if abs(predicted_change) >= prediction_threshold:
+                if prediction.get('predicted_change', 0) > params.get('threshold_change', 2):
                     alert_data = {
-                        'provider_name': prediction.get('provider_name'),
+                        'hospital_name': prediction.get('provider_name'),
                         'specialty_name': prediction.get('specialty_name'),
                         'current_weeks': prediction.get('current_weeks'),
                         'predicted_weeks': prediction.get('predicted_weeks'),
-                        'predicted_change': predicted_change,
-                        'trend_direction': 'increasing' if predicted_change > 0 else 'decreasing',
-                        'confidence': prediction.get('confidence', 0.5)
+                        'predicted_change': prediction.get('predicted_change'),
+                        'confidence': prediction.get('confidence'),
+                        'distance_km': prediction.get('distance_km')
                     }
                     
                     alert = AlertEvent(
                         event_id=f"alert_{user['user_id']}_{rule.rule_id}_{datetime.now().timestamp()}",
                         user_id=user['user_id'],
                         rule_id=rule.rule_id,
-                        alert_type="trend_prediction",
+                        alert_type="waiting_time_prediction",
                         data=alert_data,
                         priority=rule.priority,
                         created_at=datetime.now()
@@ -559,13 +546,34 @@ class IntelligentAlertEngine:
             return []
     
     def _get_user_hospital_data(self, user: Dict) -> List[Dict]:
-        """获取用户相关的医院数据"""
+        """获取用户相关的医院数据（基于地理位置过滤）"""
+        try:
+            specialty = user.get('specialty', '')
+            postcode = user.get('postcode', '')
+            radius_km = user.get('radius_km', 25)
+            
+            if not postcode:
+                # 如果没有邮编，返回所有相关专科数据
+                return self._get_all_specialty_data(specialty)
+            
+            # 使用地理服务获取附近医院
+            nearby_hospitals = self.geo_service.get_nearby_hospitals_from_db(
+                postcode, specialty, radius_km, self.db_path
+            )
+            
+            return nearby_hospitals
+            
+        except Exception as e:
+            logger.error(f"获取用户医院数据失败: {e}")
+            return []
+    
+    def _get_all_specialty_data(self, specialty: str) -> List[Dict]:
+        """获取所有专科数据（无地理限制）"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
             
             # 根据用户专科获取相关数据
-            specialty = user.get('specialty', '')
             specialty_mapping = {
                 'cardiology': 'Cardiology',
                 'orthopaedics': 'Orthopaedics',
@@ -580,7 +588,7 @@ class IntelligentAlertEngine:
             mapped_specialty = specialty_mapping.get(specialty, specialty)
             
             cursor.execute('''
-            SELECT provider_name, specialty_name, waiting_time_weeks, patients_waiting
+            SELECT org_name, specialty_name, waiting_time_weeks, patient_count
             FROM nhs_rtt_data 
             WHERE specialty_name LIKE ?
             ORDER BY waiting_time_weeks ASC
@@ -595,62 +603,40 @@ class IntelligentAlertEngine:
                     'provider_name': row[0],
                     'specialty_name': row[1],
                     'waiting_weeks': row[2],
-                    'patients_waiting': row[3]
+                    'patients_waiting': row[3],
+                    'distance_km': None  # 无地理信息
                 })
             
             return hospitals
             
         except Exception as e:
-            logger.error(f"获取用户医院数据失败: {e}")
-            return []
-    
-    def _get_data_changes(self, user: Dict, metric: str, days: int = 7) -> List[Dict]:
-        """获取数据变化"""
-        try:
-            # 简化实现：模拟数据变化
-            # 实际实现中应该查询历史数据表
-            changes = []
-            
-            # 模拟一些数据变化
-            if user.get('specialty') == 'cardiology':
-                changes.append({
-                    'provider_name': 'King\'s College Hospital NHS Foundation Trust',
-                    'specialty_name': 'Cardiology',
-                    'previous_value': 15,
-                    'current_value': 18,
-                    'change': 3
-                })
-            
-            return changes
-            
-        except Exception as e:
-            logger.error(f"获取数据变化失败: {e}")
+            logger.error(f"获取所有专科数据失败: {e}")
             return []
     
     def _find_shorter_alternatives(self, user: Dict, min_improvement: int) -> List[Dict]:
-        """寻找更短等候时间的替代选择"""
+        """寻找更短等候时间的替代选择（基于地理位置）"""
         try:
-            # 获取用户当前关注的医院等候时间
+            # 获取用户当前关注的医院等候时间（基于地理位置）
             current_data = self._get_user_hospital_data(user)
             if not current_data:
                 return []
             
-            # 找到最短等候时间作为基准
+            # 找到当前最短等候时间作为基准
             min_waiting = min(hospital['waiting_weeks'] for hospital in current_data if hospital['waiting_weeks'] > 0)
             
             alternatives = []
             for hospital in current_data:
-                if hospital['waiting_weeks'] > 0 and hospital['waiting_weeks'] < min_waiting + min_improvement:
-                    savings = min_waiting - hospital['waiting_weeks'] if hospital['waiting_weeks'] < min_waiting else 0
+                if hospital['waiting_weeks'] > 0 and hospital['waiting_weeks'] < min_waiting:
+                    savings = min_waiting - hospital['waiting_weeks']
                     
                     if savings >= min_improvement:
                         alternatives.append({
-                            'current_provider': 'Default Hospital',
+                            'current_provider': 'Current Choice',
                             'current_weeks': min_waiting,
                             'recommended_provider': hospital['provider_name'],
                             'recommended_weeks': hospital['waiting_weeks'],
                             'savings_weeks': savings,
-                            'distance_km': 15.5,  # 模拟距离
+                            'distance_km': hospital.get('distance_km'),
                             'specialty_name': hospital['specialty_name']
                         })
             
@@ -658,6 +644,35 @@ class IntelligentAlertEngine:
             
         except Exception as e:
             logger.error(f"寻找替代选择失败: {e}")
+            return []
+    
+    def _get_historical_changes(self, user: Dict, metric: str) -> List[Dict]:
+        """获取历史变化数据"""
+        try:
+            # 简化实现：获取最近的变化数据
+            hospital_data = self._get_user_hospital_data(user)
+            
+            # 模拟历史变化数据
+            changes = []
+            for hospital in hospital_data[:3]:  # 只检查前3个医院
+                import random
+                previous_value = hospital.get('waiting_weeks', 0) + random.randint(-3, 3)
+                current_value = hospital.get('waiting_weeks', 0)
+                change = current_value - previous_value
+                
+                changes.append({
+                    'hospital_name': hospital['provider_name'],
+                    'specialty_name': hospital['specialty_name'],
+                    'previous_value': previous_value,
+                    'current_value': current_value,
+                    'change': change,
+                    'distance_km': hospital.get('distance_km')
+                })
+            
+            return changes
+            
+        except Exception as e:
+            logger.error(f"获取历史变化数据失败: {e}")
             return []
     
     def _predict_waiting_times(self, user: Dict, weeks: int) -> List[Dict]:
@@ -683,7 +698,8 @@ class IntelligentAlertEngine:
                     'current_weeks': current_weeks,
                     'predicted_weeks': round(predicted_weeks, 1),
                     'predicted_change': round(trend, 1),
-                    'confidence': round(random.uniform(0.6, 0.9), 2)
+                    'confidence': round(random.uniform(0.6, 0.9), 2),
+                    'distance_km': hospital.get('distance_km')
                 })
             
             return predictions
@@ -701,8 +717,8 @@ class IntelligentAlertEngine:
             cursor.execute('''
             INSERT OR REPLACE INTO user_alert_history 
             (user_id, rule_id, last_alert_time, alert_count)
-            VALUES (?, ?, ?, COALESCE((SELECT alert_count + 1 FROM user_alert_history WHERE user_id = ? AND rule_id = ?), 1))
-            ''', (user_id, rule_id, datetime.now(), user_id, rule_id))
+            VALUES (?, ?, ?, COALESCE((SELECT alert_count FROM user_alert_history WHERE user_id = ? AND rule_id = ?), 0) + 1)
+            ''', (user_id, rule_id, datetime.now().isoformat(), user_id, rule_id))
             
             conn.commit()
             conn.close()
@@ -710,7 +726,7 @@ class IntelligentAlertEngine:
         except Exception as e:
             logger.error(f"更新提醒历史失败: {e}")
     
-    def _process_alerts(self, alerts: List[AlertEvent]) -> List[AlertEvent]:
+    async def _process_alerts(self, alerts: List[AlertEvent]) -> List[AlertEvent]:
         """处理提醒事件"""
         try:
             processed = []
@@ -765,8 +781,8 @@ class IntelligentAlertEngine:
                 json.dumps(alert.data),
                 alert.priority,
                 alert.status,
-                alert.created_at,
-                alert.sent_at
+                alert.created_at.isoformat(),
+                alert.sent_at.isoformat() if alert.sent_at else None
             ))
             
             conn.commit()
@@ -779,21 +795,18 @@ class IntelligentAlertEngine:
         """发送提醒通知"""
         try:
             if not self.whatsapp_service:
-                logger.warning("WhatsApp服务未配置，无法发送通知")
                 return False
             
-            # 获取用户手机号
+            # 格式化提醒消息
+            message = self._format_alert_message(alert)
+            
+            # 发送消息
+            # 注意：这里需要从用户ID获取手机号
             user_phone = self._get_user_phone(alert.user_id)
-            if not user_phone:
-                logger.error(f"找不到用户手机号: {alert.user_id}")
-                return False
+            if user_phone:
+                return self.whatsapp_service.send_message(user_phone, message)
             
-            # 发送通知
-            return self.whatsapp_service.send_alert_notification(
-                user_phone=user_phone,
-                alert_type=alert.alert_type,
-                alert_data=alert.data
-            )
+            return False
             
         except Exception as e:
             logger.error(f"发送提醒通知失败: {e}")
@@ -818,92 +831,107 @@ class IntelligentAlertEngine:
             logger.error(f"获取用户手机号失败: {e}")
             return None
     
+    def _format_alert_message(self, alert: AlertEvent) -> str:
+        """格式化提醒消息"""
+        try:
+            data = alert.data
+            alert_type = alert.alert_type
+            
+            if alert_type == "threshold_exceeded":
+                message = f"""🚨 **等候时间提醒**
+
+🏥 医院: {data.get('hospital_name', 'Unknown')}
+🩺 专科: {data.get('specialty_name', 'Unknown')}
+⏰ 等候时间: {data.get('current_value', 0)} 周
+📊 阈值: {data.get('threshold_value', 0)} 周"""
+                
+                if data.get('distance_km'):
+                    message += f"\n📍 距离: {data['distance_km']} 公里"
+                
+                message += "\n\n💡 建议查看其他选择或考虑私立医疗"
+                
+            elif alert_type == "shorter_alternative":
+                message = f"""🎯 **更短等候时间选择**
+
+🏥 推荐医院: {data.get('recommended_provider', 'Unknown')}
+🩺 专科: {data.get('specialty_name', 'Unknown')}
+⏰ 等候时间: {data.get('recommended_weeks', 0)} 周
+⚡ 可节省: {data.get('savings_weeks', 0)} 周"""
+                
+                if data.get('distance_km'):
+                    message += f"\n📍 距离: {data['distance_km']} 公里"
+                
+                message += "\n\n💡 考虑转诊到此医院获得更快治疗"
+                
+            elif alert_type.startswith("waiting_time_"):
+                change_type = "增加" if "increase" in alert_type else "减少"
+                icon = "📈" if "increase" in alert_type else "📉"
+                
+                message = f"""{icon} **等候时间{change_type}提醒**
+
+🏥 医院: {data.get('hospital_name', 'Unknown')}
+🩺 专科: {data.get('specialty_name', 'Unknown')}
+⏰ 之前: {data.get('previous_value', 0)} 周
+⏰ 现在: {data.get('current_value', 0)} 周
+📊 变化: {data.get('change', 0):+} 周"""
+                
+                if data.get('distance_km'):
+                    message += f"\n📍 距离: {data['distance_km']} 公里"
+                
+            else:
+                message = f"📋 **系统提醒**: {alert_type}"
+            
+            return message
+            
+        except Exception as e:
+            logger.error(f"格式化提醒消息失败: {e}")
+            return "📋 系统提醒（格式化错误）"
+    
     def get_alert_statistics(self) -> Dict:
         """获取提醒统计信息"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
             
-            # 总提醒数
-            cursor.execute('SELECT COUNT(*) FROM alert_events')
-            total_alerts = cursor.fetchone()[0]
-            
-            # 按状态统计
+            # 统计各种提醒类型的数量
             cursor.execute('''
-            SELECT status, COUNT(*) FROM alert_events GROUP BY status
+            SELECT alert_type, status, COUNT(*) 
+            FROM alert_events 
+            WHERE created_at >= date('now', '-7 days')
+            GROUP BY alert_type, status
             ''')
-            status_stats = dict(cursor.fetchall())
             
-            # 按优先级统计
-            cursor.execute('''
-            SELECT priority, COUNT(*) FROM alert_events GROUP BY priority ORDER BY priority DESC
-            ''')
-            priority_stats = dict(cursor.fetchall())
+            stats_rows = cursor.fetchall()
             
-            # 按类型统计
+            # 统计活跃用户数
             cursor.execute('''
-            SELECT alert_type, COUNT(*) FROM alert_events GROUP BY alert_type
+            SELECT COUNT(DISTINCT user_id) FROM user_preferences WHERE status = 'active'
             ''')
-            type_stats = dict(cursor.fetchall())
             
-            # 今日提醒数
+            active_users = cursor.fetchone()[0]
+            
+            # 统计活跃规则数
             cursor.execute('''
-            SELECT COUNT(*) FROM alert_events 
-            WHERE DATE(created_at) = DATE('now')
+            SELECT COUNT(*) FROM alert_rules WHERE is_active = 1
             ''')
-            today_alerts = cursor.fetchone()[0]
+            
+            active_rules = cursor.fetchone()[0]
             
             conn.close()
             
-            return {
-                'total_alerts': total_alerts,
-                'today_alerts': today_alerts,
-                'status_distribution': status_stats,
-                'priority_distribution': priority_stats,
-                'type_distribution': type_stats,
-                'success_rate': status_stats.get('sent', 0) / max(total_alerts, 1) * 100
+            stats = {
+                'active_users': active_users,
+                'active_rules': active_rules,
+                'recent_alerts': {}
             }
+            
+            for alert_type, status, count in stats_rows:
+                if alert_type not in stats['recent_alerts']:
+                    stats['recent_alerts'][alert_type] = {}
+                stats['recent_alerts'][alert_type][status] = count
+            
+            return stats
             
         except Exception as e:
             logger.error(f"获取提醒统计失败: {e}")
-            return {}
-    
-    def create_custom_rule(self, rule_data: Dict) -> bool:
-        """创建自定义提醒规则"""
-        try:
-            rule = AlertRule(
-                rule_id=rule_data.get('rule_id'),
-                name=rule_data.get('name'),
-                condition_type=rule_data.get('condition_type'),
-                parameters=rule_data.get('parameters', {}),
-                priority=rule_data.get('priority', 3),
-                frequency_hours=rule_data.get('frequency_hours', 24),
-                is_active=rule_data.get('is_active', True)
-            )
-            
-            conn = sqlite3.connect(self.db_path)
-            cursor = conn.cursor()
-            
-            cursor.execute('''
-            INSERT OR REPLACE INTO alert_rules 
-            (rule_id, name, condition_type, parameters, priority, frequency_hours, is_active)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-            ''', (
-                rule.rule_id,
-                rule.name,
-                rule.condition_type,
-                json.dumps(rule.parameters),
-                rule.priority,
-                rule.frequency_hours,
-                rule.is_active
-            ))
-            
-            conn.commit()
-            conn.close()
-            
-            logger.info(f"自定义规则创建成功: {rule.rule_id}")
-            return True
-            
-        except Exception as e:
-            logger.error(f"创建自定义规则失败: {e}")
-            return False 
+            return {'error': str(e)} 

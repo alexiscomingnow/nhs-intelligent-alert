@@ -1,179 +1,340 @@
 #!/usr/bin/env python3
 """
-WhatsApp Flow Service - NHS Alert System
-患者交互和订阅管理服务
+WhatsApp Flow Service
+处理WhatsApp Interactive Flow的用户交互
 """
 
+import sqlite3
 import json
 import logging
-import sqlite3
-import requests
-from datetime import datetime, timedelta
 from typing import Dict, List, Optional
-import os
-from pathlib import Path
+from datetime import datetime
+from geographic_service import GeographicService
 
 logger = logging.getLogger(__name__)
 
 class WhatsAppFlowService:
-    """WhatsApp Flow集成服务"""
+    """WhatsApp Flow服务"""
     
-    def __init__(self, config_manager):
-        self.config = config_manager
-        self.db_path = self.config.get('database_url', 'sqlite:///nhs_alerts.db').replace('sqlite:///', '')
-        
-        # WhatsApp配置
-        self.wa_token = os.getenv('WHATSAPP_TOKEN', 'demo_token')
-        self.wa_phone_id = os.getenv('WHATSAPP_PHONE_ID', 'demo_phone_id')
-        self.wa_verify_token = os.getenv('WHATSAPP_VERIFY_TOKEN', 'nhs_alert_verify')
-        
-        self.base_url = f"https://graph.facebook.com/v18.0/{self.wa_phone_id}/messages"
-        
-    def create_patient_setup_flow(self) -> Dict:
-        """创建患者设置流程"""
-        flow_config = {
+    def __init__(self, db_path: str = 'nhs_alerts.db'):
+        self.db_path = db_path
+        self.geo_service = GeographicService(db_path)
+        self._initialize_database()
+    
+    def _initialize_database(self):
+        """初始化数据库表"""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            
+            # 创建用户偏好表（如果不存在）
+            cursor.execute('''
+            CREATE TABLE IF NOT EXISTS user_preferences (
+                user_id TEXT PRIMARY KEY,
+                phone_number TEXT UNIQUE,
+                postcode TEXT,
+                specialty TEXT,
+                threshold_weeks INTEGER,
+                radius_km INTEGER,
+                notification_types TEXT,
+                status TEXT DEFAULT 'active',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+            ''')
+            
+            # 创建用户交互历史表
+            cursor.execute('''
+            CREATE TABLE IF NOT EXISTS user_interactions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id TEXT NOT NULL,
+                interaction_type TEXT NOT NULL,
+                interaction_data TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+            ''')
+            
+            conn.commit()
+            conn.close()
+            
+        except Exception as e:
+            logger.error(f"初始化数据库失败: {e}")
+    
+    def create_interactive_flow(self, flow_type: str = 'user_preferences') -> Dict:
+        """创建交互式Flow"""
+        if flow_type == 'user_preferences':
+            return self._create_preferences_flow()
+        elif flow_type == 'hospital_comparison':
+            return self._create_comparison_flow()
+        else:
+            return {"error": "未知的Flow类型"}
+    
+    def _create_preferences_flow(self) -> Dict:
+        """创建用户偏好设置Flow"""
+        return {
             "version": "3.0",
+            "data_api_version": "3.0",
+            "routing_model": {
+                "PREFERENCES_SETUP": [
+                    "POSTCODE_INPUT",
+                    "SPECIALTY_SELECTION",
+                    "THRESHOLD_SETTING",
+                    "RADIUS_SETTING",
+                    "NOTIFICATION_SETUP",
+                    "CONFIRMATION"
+                ]
+            },
             "screens": [
                 {
-                    "id": "WELCOME",
-                    "title": "NHS等候提醒设置",
+                    "id": "PREFERENCES_SETUP",
+                    "title": "NHS 等候时间提醒设置",
                     "layout": {
                         "type": "SingleColumnLayout",
                         "children": [
                             {
                                 "type": "TextHeading",
-                                "text": "欢迎使用NHS等候时间提醒服务"
+                                "text": "🏥 设置您的个人偏好"
                             },
                             {
                                 "type": "TextBody",
-                                "text": "我们将为您监控NHS等候时间，并在有更短等候选择时通知您。"
-                            },
-                            {
-                                "type": "Footer",
-                                "label": "开始设置",
-                                "on-click-action": {
-                                    "name": "navigate",
-                                    "payload": {"screen": "POSTCODE_INPUT"}
-                                }
+                                "text": "我们将根据您的偏好提供个性化的NHS等候时间提醒"
                             }
                         ]
-                    }
+                    },
+                    "terminal": False
                 },
                 {
                     "id": "POSTCODE_INPUT",
-                    "title": "输入您的邮编",
+                    "title": "邮编设置",
+                    "data": [
+                        {
+                            "type": "string",
+                            "name": "postcode",
+                            "label": "您的邮编",
+                            "required": True,
+                            "example": "SW1A 1AA"
+                        }
+                    ],
                     "layout": {
                         "type": "SingleColumnLayout",
                         "children": [
                             {
-                                "type": "TextInput",
-                                "name": "postcode",
-                                "label": "邮编",
-                                "input-type": "text",
-                                "required": True,
-                                "helper-text": "例如: SW1A 1AA"
+                                "type": "TextHeading", 
+                                "text": "📍 输入您的邮编"
                             },
                             {
-                                "type": "Footer",
-                                "label": "下一步",
-                                "on-click-action": {
-                                    "name": "navigate",
-                                    "payload": {"screen": "SPECIALTY_SELECTION"}
-                                }
+                                "type": "TextInput",
+                                "label": "邮编",
+                                "name": "postcode",
+                                "required": True,
+                                "input-type": "text"
                             }
                         ]
-                    }
+                    },
+                    "terminal": False
                 },
                 {
                     "id": "SPECIALTY_SELECTION",
-                    "title": "选择专科",
+                    "title": "医疗专科选择",
+                    "data": [
+                        {
+                            "type": "string",
+                            "name": "specialty",
+                            "label": "医疗专科",
+                            "required": True
+                        }
+                    ],
                     "layout": {
                         "type": "SingleColumnLayout",
                         "children": [
                             {
+                                "type": "TextHeading",
+                                "text": "🩺 选择您关注的医疗专科"
+                            },
+                            {
                                 "type": "RadioButtonsGroup",
+                                "label": "医疗专科",
                                 "name": "specialty",
-                                "label": "您需要哪个专科的治疗？",
                                 "required": True,
                                 "data-source": [
                                     {"id": "cardiology", "title": "心脏科 (Cardiology)"},
                                     {"id": "orthopaedics", "title": "骨科 (Orthopaedics)"},
-                                    {"id": "general_surgery", "title": "普外科 (General Surgery)"},
+                                    {"id": "general_surgery", "title": "普通外科 (General Surgery)"},
                                     {"id": "dermatology", "title": "皮肤科 (Dermatology)"},
                                     {"id": "ophthalmology", "title": "眼科 (Ophthalmology)"},
                                     {"id": "ent", "title": "耳鼻喉科 (ENT)"},
                                     {"id": "gynaecology", "title": "妇科 (Gynaecology)"},
                                     {"id": "urology", "title": "泌尿科 (Urology)"}
                                 ]
-                            },
-                            {
-                                "type": "Footer",
-                                "label": "下一步",
-                                "on-click-action": {
-                                    "name": "navigate",
-                                    "payload": {"screen": "PREFERENCES"}
-                                }
                             }
                         ]
-                    }
+                    },
+                    "terminal": False
                 },
                 {
-                    "id": "PREFERENCES",
-                    "title": "提醒偏好",
+                    "id": "THRESHOLD_SETTING",
+                    "title": "等候时间阈值",
+                    "data": [
+                        {
+                            "type": "number",
+                            "name": "threshold_weeks",
+                            "label": "等候时间阈值（周）",
+                            "required": True
+                        }
+                    ],
                     "layout": {
                         "type": "SingleColumnLayout",
                         "children": [
                             {
+                                "type": "TextHeading",
+                                "text": "⏰ 设置等候时间阈值"
+                            },
+                            {
+                                "type": "TextBody",
+                                "text": "当等候时间超过此阈值时，我们会提醒您"
+                            },
+                            {
                                 "type": "Dropdown",
+                                "label": "等候时间阈值（周）",
                                 "name": "threshold_weeks",
-                                "label": "当等候时间超过多少周时提醒我？",
                                 "required": True,
                                 "data-source": [
                                     {"id": "4", "title": "4周"},
+                                    {"id": "6", "title": "6周"},
                                     {"id": "8", "title": "8周"},
                                     {"id": "12", "title": "12周"},
                                     {"id": "18", "title": "18周"},
-                                    {"id": "25", "title": "25周"}
+                                    {"id": "24", "title": "24周"}
                                 ]
+                            }
+                        ]
+                    },
+                    "terminal": False
+                },
+                {
+                    "id": "RADIUS_SETTING",
+                    "title": "搜索范围",
+                    "data": [
+                        {
+                            "type": "number",
+                            "name": "radius_km",
+                            "label": "搜索半径（公里）",
+                            "required": True
+                        }
+                    ],
+                    "layout": {
+                        "type": "SingleColumnLayout",
+                        "children": [
+                            {
+                                "type": "TextHeading",
+                                "text": "📍 设置搜索范围"
+                            },
+                            {
+                                "type": "TextBody",
+                                "text": "我们会在此范围内为您查找医院"
                             },
                             {
                                 "type": "Dropdown",
+                                "label": "搜索半径（公里）",
                                 "name": "radius_km",
-                                "label": "搜索范围",
                                 "required": True,
                                 "data-source": [
-                                    {"id": "10", "title": "10公里内"},
-                                    {"id": "25", "title": "25公里内"},
-                                    {"id": "50", "title": "50公里内"},
-                                    {"id": "100", "title": "100公里内"}
+                                    {"id": "10", "title": "10公里"},
+                                    {"id": "15", "title": "15公里"},
+                                    {"id": "25", "title": "25公里"},
+                                    {"id": "40", "title": "40公里"},
+                                    {"id": "60", "title": "60公里"},
+                                    {"id": "100", "title": "100公里"}
                                 ]
+                            }
+                        ]
+                    },
+                    "terminal": False
+                },
+                {
+                    "id": "NOTIFICATION_SETUP",
+                    "title": "通知设置",
+                    "data": [
+                        {
+                            "type": "array",
+                            "name": "notification_types",
+                            "label": "通知类型",
+                            "required": True
+                        }
+                    ],
+                    "layout": {
+                        "type": "SingleColumnLayout",
+                        "children": [
+                            {
+                                "type": "TextHeading",
+                                "text": "🔔 选择通知类型"
                             },
                             {
                                 "type": "CheckboxGroup",
-                                "name": "notification_types",
                                 "label": "通知类型",
+                                "name": "notification_types",
+                                "required": True,
                                 "data-source": [
-                                    {"id": "wait_time_change", "title": "等候时间变化"},
-                                    {"id": "shorter_alternative", "title": "发现更短等候选择"},
-                                    {"id": "slot_available", "title": "预约空位可用"},
-                                    {"id": "private_option", "title": "私立医疗选择"}
+                                    {"id": "threshold_alerts", "title": "等候时间阈值提醒"},
+                                    {"id": "shorter_alternatives", "title": "更短选择提醒"},
+                                    {"id": "trend_updates", "title": "趋势更新"},
+                                    {"id": "weekly_summary", "title": "每周总结"}
                                 ]
-                            },
-                            {
-                                "type": "Footer",
-                                "label": "完成设置",
-                                "on-click-action": {
-                                    "name": "complete",
-                                    "payload": {"action": "setup_complete"}
-                                }
                             }
                         ]
-                    }
+                    },
+                    "terminal": False
+                },
+                {
+                    "id": "CONFIRMATION",
+                    "title": "设置确认",
+                    "layout": {
+                        "type": "SingleColumnLayout",
+                        "children": [
+                            {
+                                "type": "TextHeading",
+                                "text": "✅ 设置完成！"
+                            },
+                            {
+                                "type": "TextBody",
+                                "text": "您的个人偏好已保存，我们将开始为您提供个性化的NHS等候时间提醒。"
+                            }
+                        ]
+                    },
+                    "terminal": True
                 }
             ]
         }
-        
-        return flow_config
+    
+    def _create_comparison_flow(self) -> Dict:
+        """创建医院比较Flow"""
+        return {
+            "version": "3.0",
+            "data_api_version": "3.0",
+            "routing_model": {
+                "HOSPITAL_COMPARISON": ["RESULTS_DISPLAY"]
+            },
+            "screens": [
+                {
+                    "id": "HOSPITAL_COMPARISON",
+                    "title": "医院等候时间对比",
+                    "layout": {
+                        "type": "SingleColumnLayout",
+                        "children": [
+                            {
+                                "type": "TextHeading",
+                                "text": "🏥 您附近的医院对比"
+                            },
+                            {
+                                "type": "TextBody",
+                                "text": "基于您的位置和专科偏好"
+                            }
+                        ]
+                    },
+                    "terminal": True
+                }
+            ]
+        }
     
     def process_flow_response(self, flow_data: Dict, user_phone: str) -> Dict:
         """处理Flow响应数据"""
@@ -202,7 +363,7 @@ class WhatsAppFlowService:
                 notification_types=notification_types
             )
             
-            # 获取附近医院信息
+            # 获取附近医院信息（使用地理服务）
             nearby_hospitals = self._get_nearby_hospitals(postcode, specialty, radius_km)
             
             # 发送确认消息
@@ -278,65 +439,36 @@ class WhatsAppFlowService:
             raise
     
     def _get_nearby_hospitals(self, postcode: str, specialty: str, radius_km: int) -> List[Dict]:
-        """获取附近医院的等候时间数据"""
+        """获取附近医院的等候时间数据（使用地理服务）"""
         try:
-            conn = sqlite3.connect(self.db_path)
-            cursor = conn.cursor()
+            # 使用地理服务获取附近医院
+            nearby_hospitals = self.geo_service.get_nearby_hospitals_from_db(
+                postcode, specialty, radius_km, self.db_path
+            )
             
-            # 简化版本：直接从NHS数据中查找匹配的专科
-            specialty_mapping = {
-                'cardiology': 'Cardiology',
-                'orthopaedics': 'Orthopaedics', 
-                'general_surgery': 'General Surgery',
-                'dermatology': 'Dermatology',
-                'ophthalmology': 'Ophthalmology',
-                'ent': 'ENT',
-                'gynaecology': 'Gynaecology',
-                'urology': 'Urology'
-            }
+            # 为每个医院计算推荐评分
+            for hospital in nearby_hospitals:
+                hospital['recommendation_score'] = self._calculate_recommendation_score(
+                    hospital.get('waiting_time_weeks', 0),
+                    hospital.get('patient_count', 0),
+                    hospital.get('distance_km', 0)
+                )
             
-            mapped_specialty = specialty_mapping.get(specialty, specialty)
+            # 按推荐评分排序
+            nearby_hospitals.sort(key=lambda x: x.get('recommendation_score', 0), reverse=True)
             
-            cursor.execute('''
-            SELECT provider_name, specialty_name, waiting_time_weeks, patients_waiting
-            FROM nhs_rtt_data 
-            WHERE specialty_name LIKE ? 
-            ORDER BY waiting_time_weeks ASC 
-            LIMIT 5
-            ''', (f'%{mapped_specialty}%',))
-            
-            rows = cursor.fetchall()
-            conn.close()
-            
-            hospitals = []
-            for row in rows:
-                hospitals.append({
-                    'provider_name': row[0],
-                    'specialty_name': row[1], 
-                    'waiting_time_weeks': row[2],
-                    'patients_waiting': row[3],
-                    'distance_km': self._calculate_distance(postcode, row[0]),  # 模拟距离
-                    'recommendation_score': self._calculate_recommendation_score(row[2], row[3])
-                })
-            
-            return hospitals
+            return nearby_hospitals[:10]  # 返回前10个推荐医院
             
         except Exception as e:
             logger.error(f"获取附近医院失败: {e}")
             return []
     
-    def _calculate_distance(self, postcode: str, provider_name: str) -> float:
-        """计算距离（模拟实现）"""
-        # 实际实现中应该使用地理编码API
-        import random
-        return round(random.uniform(5.0, 45.0), 1)
-    
-    def _calculate_recommendation_score(self, waiting_weeks: int, patients_waiting: int) -> float:
-        """计算推荐评分"""
-        # 简单评分算法：等候时间越短，评分越高
+    def _calculate_recommendation_score(self, waiting_weeks: int, patients_waiting: int, distance_km: float) -> float:
+        """计算推荐评分（考虑等候时间、患者数量和距离）"""
         if waiting_weeks <= 0:
             return 5.0
         
+        # 基础评分：等候时间越短，评分越高
         base_score = max(0, 5.0 - (waiting_weeks / 10))
         
         # 考虑患者数量
@@ -344,226 +476,120 @@ class WhatsAppFlowService:
             base_score -= 0.5
         elif patients_waiting < 100:
             base_score += 0.5
-            
+        
+        # 考虑距离：距离越近，评分越高
+        if distance_km:
+            if distance_km <= 10:
+                base_score += 0.5
+            elif distance_km <= 25:
+                base_score += 0.2
+            elif distance_km > 50:
+                base_score -= 0.3
+        
         return round(max(0, min(5.0, base_score)), 1)
     
     def _create_confirmation_message(self, postcode: str, specialty: str, threshold_weeks: int, 
-                                   radius_km: int, hospitals: List[Dict]) -> str:
+                                   radius_km: int, nearby_hospitals: List[Dict]) -> str:
         """创建确认消息"""
-        specialty_cn = {
+        specialty_names = {
             'cardiology': '心脏科',
             'orthopaedics': '骨科',
-            'general_surgery': '普外科',
+            'general_surgery': '普通外科',
             'dermatology': '皮肤科',
             'ophthalmology': '眼科',
             'ent': '耳鼻喉科',
             'gynaecology': '妇科',
             'urology': '泌尿科'
-        }.get(specialty, specialty)
+        }
         
-        message = f"""
-🏥 *NHS等候提醒设置确认*
-
-📍 *您的区域*: {postcode}
-🩺 *专科*: {specialty_cn}
-⏰ *提醒阈值*: {threshold_weeks}周
-📍 *搜索范围*: {radius_km}公里
-
-✅ *设置完成！*我们将为您监控等候时间变化。
-
-📊 *当前附近医院状况*:
-"""
+        specialty_chinese = specialty_names.get(specialty, specialty)
         
-        for i, hospital in enumerate(hospitals[:3], 1):
-            message += f"""
-{i}. *{hospital['provider_name']}*
-   ⏰ 等候: {hospital['waiting_time_weeks']}周
-   📍 距离: {hospital['distance_km']}公里
-   ⭐ 推荐: {hospital['recommendation_score']}/5.0
-"""
-        
-        message += """
-🔔 我们会在以下情况通知您:
-• 等候时间发生变化
-• 发现更短等候的医院
-• 有预约空位可用
+        message = f"""✅ **设置完成！**
 
-输入 *停止* 可随时取消订阅
-输入 *设置* 可修改偏好
-"""
+📍 **您的位置**: {postcode}
+🩺 **关注专科**: {specialty_chinese}
+⏰ **提醒阈值**: {threshold_weeks} 周
+📏 **搜索范围**: {radius_km} 公里
+
+🏥 **找到 {len(nearby_hospitals)} 家附近医院**"""
+
+        if nearby_hospitals:
+            message += "\n\n**🎯 最佳推荐**:"
+            best_hospital = nearby_hospitals[0]
+            message += f"\n🏆 {best_hospital.get('org_name', 'Unknown')}"
+            message += f"\n⏰ 等候时间: {best_hospital.get('waiting_time_weeks', 0)} 周"
+            if best_hospital.get('distance_km'):
+                message += f"\n📍 距离: {best_hospital['distance_km']} 公里"
+            message += f"\n⭐ 推荐评分: {best_hospital.get('recommendation_score', 0)}/5"
+        
+        message += "\n\n💡 我们会定期检查等候时间变化并及时提醒您！"
         
         return message
     
     def _send_hospital_comparison(self, user_phone: str, hospitals: List[Dict]):
-        """发送医院对比卡片"""
+        """发送医院对比信息"""
         if not hospitals:
             return
-            
-        # 创建结构化消息
-        message_data = {
-            "messaging_product": "whatsapp",
-            "recipient_type": "individual",
-            "to": user_phone,
-            "type": "interactive",
-            "interactive": {
-                "type": "list",
-                "header": {
-                    "type": "text",
-                    "text": "附近医院等候时间对比"
-                },
-                "body": {
-                    "text": "以下是根据您的偏好推荐的医院，按等候时间排序："
-                },
-                "footer": {
-                    "text": "点击查看详细信息"
-                },
-                "action": {
-                    "button": "查看医院",
-                    "sections": [
-                        {
-                            "title": "推荐医院",
-                            "rows": []
-                        }
-                    ]
-                }
-            }
-        }
         
-        # 添加医院选项
-        for i, hospital in enumerate(hospitals[:10]):
-            message_data["interactive"]["action"]["sections"][0]["rows"].append({
-                "id": f"hospital_{i}",
-                "title": hospital['provider_name'][:24],
-                "description": f"{hospital['waiting_time_weeks']}周 • {hospital['distance_km']}km • ⭐{hospital['recommendation_score']}"
-            })
+        comparison_message = "🏥 **您附近的医院对比**\n\n"
         
-        # 发送消息（模拟）
-        self._send_whatsapp_message(message_data)
+        for i, hospital in enumerate(hospitals[:5], 1):
+            comparison_message += f"**{i}. {hospital.get('org_name', 'Unknown')}**\n"
+            comparison_message += f"   ⏰ 等候: {hospital.get('waiting_time_weeks', 0)} 周\n"
+            if hospital.get('distance_km'):
+                comparison_message += f"   📍 距离: {hospital['distance_km']} 公里\n"
+            comparison_message += f"   👥 等候人数: {hospital.get('patient_count', 0)}\n"
+            comparison_message += f"   ⭐ 评分: {hospital.get('recommendation_score', 0)}/5\n\n"
+        
+        comparison_message += "💡 **提示**: 评分综合考虑了等候时间、距离和医院容量"
+        
+        # 这里应该通过WhatsApp发送消息
+        logger.info(f"Hospital comparison for {user_phone}: {comparison_message}")
     
-    def _send_whatsapp_message(self, message_data: Dict) -> bool:
-        """发送WhatsApp消息"""
+    def update_user_preferences(self, user_phone: str, updates: Dict) -> bool:
+        """更新用户偏好"""
         try:
-            headers = {
-                'Authorization': f'Bearer {self.wa_token}',
-                'Content-Type': 'application/json'
-            }
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
             
-            # 在开发环境中记录消息而不实际发送
-            if self.config.get('debug', True):
-                logger.info(f"模拟发送WhatsApp消息: {json.dumps(message_data, indent=2, ensure_ascii=False)}")
-                return True
+            # 构建更新查询
+            update_fields = []
+            update_values = []
             
-            response = requests.post(self.base_url, headers=headers, json=message_data)
+            for field, value in updates.items():
+                if field in ['postcode', 'specialty', 'threshold_weeks', 'radius_km', 'notification_types']:
+                    update_fields.append(f"{field} = ?")
+                    if field == 'notification_types' and isinstance(value, list):
+                        update_values.append(json.dumps(value))
+                    else:
+                        update_values.append(value)
             
-            if response.status_code == 200:
-                logger.info(f"WhatsApp消息发送成功: {message_data.get('to', 'unknown')}")
-                return True
-            else:
-                logger.error(f"WhatsApp消息发送失败: {response.status_code} - {response.text}")
+            if not update_fields:
                 return False
-                
-        except Exception as e:
-            logger.error(f"发送WhatsApp消息异常: {e}")
-            return False
-    
-    def send_alert_notification(self, user_phone: str, alert_type: str, alert_data: Dict) -> bool:
-        """发送提醒通知"""
-        try:
-            if alert_type == "waiting_time_change":
-                message = self._create_waiting_time_alert(alert_data)
-            elif alert_type == "shorter_alternative":
-                message = self._create_alternative_alert(alert_data)
-            elif alert_type == "slot_available":
-                message = self._create_slot_alert(alert_data)
+            
+            update_values.append(datetime.now())
+            update_values.append(user_phone)
+            
+            query = f'''
+            UPDATE user_preferences 
+            SET {', '.join(update_fields)}, updated_at = ?
+            WHERE phone_number = ?
+            '''
+            
+            cursor.execute(query, update_values)
+            
+            if cursor.rowcount > 0:
+                conn.commit()
+                conn.close()
+                logger.info(f"用户偏好更新成功: {user_phone}")
+                return True
             else:
-                message = self._create_generic_alert(alert_data)
-            
-            message_data = {
-                "messaging_product": "whatsapp",
-                "recipient_type": "individual", 
-                "to": user_phone,
-                "type": "text",
-                "text": {"body": message}
-            }
-            
-            return self._send_whatsapp_message(message_data)
+                conn.close()
+                return False
             
         except Exception as e:
-            logger.error(f"发送提醒通知失败: {e}")
+            logger.error(f"更新用户偏好失败: {e}")
             return False
-    
-    def _create_waiting_time_alert(self, alert_data: Dict) -> str:
-        """创建等候时间变化提醒"""
-        return f"""
-🔔 *NHS等候时间更新*
-
-🏥 *{alert_data.get('provider_name', '医院')}*
-🩺 *{alert_data.get('specialty_name', '专科')}*
-
-⏰ *等候时间变化*:
-   之前: {alert_data.get('previous_weeks', 0)}周
-   现在: {alert_data.get('current_weeks', 0)}周
-   变化: {alert_data.get('change_weeks', 0):+d}周
-
-📅 更新时间: {datetime.now().strftime('%Y-%m-%d %H:%M')}
-
-🔍 输入 *搜索* 查看其他选择
-⚙️ 输入 *设置* 修改提醒偏好
-"""
-    
-    def _create_alternative_alert(self, alert_data: Dict) -> str:
-        """创建替代选择提醒"""
-        return f"""
-🎯 *发现更好的选择！*
-
-🏥 *推荐医院*: {alert_data.get('recommended_provider', '医院')}
-🩺 *专科*: {alert_data.get('specialty_name', '专科')}
-
-⏰ *等候对比*:
-   您当前选择: {alert_data.get('current_weeks', 0)}周
-   推荐选择: {alert_data.get('recommended_weeks', 0)}周
-   可节省: {alert_data.get('savings_weeks', 0)}周 ⚡
-
-📍 距离: {alert_data.get('distance_km', 0)}公里
-⭐ 推荐评分: {alert_data.get('score', 0)}/5.0
-
-🔗 [立即预约] | 🔍 [查看更多选择]
-
-💡 此推荐基于最新NHS数据
-"""
-    
-    def _create_slot_alert(self, alert_data: Dict) -> str:
-        """创建空位可用提醒"""
-        return f"""
-🚨 *预约空位可用！*
-
-🏥 *{alert_data.get('provider_name', '医院')}*
-🩺 *{alert_data.get('specialty_name', '专科')}*
-
-📅 *可用时间*:
-   {alert_data.get('available_date', '即将公布')}
-   {alert_data.get('available_time', '')}
-
-⏰ 等候时间: {alert_data.get('waiting_weeks', 0)}周
-📍 距离: {alert_data.get('distance_km', 0)}公里
-
-🔗 *[立即预约]* - 空位有限！
-
-⚠️ 请尽快行动，空位可能很快被占用
-"""
-    
-    def _create_generic_alert(self, alert_data: Dict) -> str:
-        """创建通用提醒"""
-        return f"""
-🔔 *NHS提醒更新*
-
-{alert_data.get('message', '有新的更新信息')}
-
-📅 时间: {datetime.now().strftime('%Y-%m-%d %H:%M')}
-
-🔍 输入 *详情* 查看完整信息
-⚙️ 输入 *设置* 修改提醒偏好
-"""
     
     def get_user_preferences(self, user_phone: str) -> Optional[Dict]:
         """获取用户偏好"""
@@ -596,26 +622,77 @@ class WhatsAppFlowService:
             logger.error(f"获取用户偏好失败: {e}")
             return None
     
-    def update_user_status(self, user_phone: str, status: str) -> bool:
-        """更新用户状态"""
+    def delete_user_preferences(self, user_phone: str) -> bool:
+        """删除用户偏好"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
             
             cursor.execute('''
-            UPDATE user_preferences SET status = ?, updated_at = ?
+            UPDATE user_preferences SET status = 'inactive', updated_at = ?
             WHERE phone_number = ?
-            ''', (status, datetime.now(), user_phone))
+            ''', (datetime.now(), user_phone))
             
             success = cursor.rowcount > 0
             conn.commit()
             conn.close()
             
+            if success:
+                logger.info(f"用户偏好已删除: {user_phone}")
+            
             return success
             
         except Exception as e:
-            logger.error(f"更新用户状态失败: {e}")
+            logger.error(f"删除用户偏好失败: {e}")
             return False
+    
+    def log_user_interaction(self, user_id: str, interaction_type: str, interaction_data: Dict):
+        """记录用户交互"""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            
+            cursor.execute('''
+            INSERT INTO user_interactions (user_id, interaction_type, interaction_data)
+            VALUES (?, ?, ?)
+            ''', (user_id, interaction_type, json.dumps(interaction_data)))
+            
+            conn.commit()
+            conn.close()
+            
+        except Exception as e:
+            logger.error(f"记录用户交互失败: {e}")
+    
+    def get_user_interaction_history(self, user_id: str, limit: int = 10) -> List[Dict]:
+        """获取用户交互历史"""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            
+            cursor.execute('''
+            SELECT interaction_type, interaction_data, created_at
+            FROM user_interactions 
+            WHERE user_id = ?
+            ORDER BY created_at DESC
+            LIMIT ?
+            ''', (user_id, limit))
+            
+            rows = cursor.fetchall()
+            conn.close()
+            
+            interactions = []
+            for row in rows:
+                interactions.append({
+                    'interaction_type': row[0],
+                    'interaction_data': json.loads(row[1]) if row[1] else {},
+                    'created_at': row[2]
+                })
+            
+            return interactions
+            
+        except Exception as e:
+            logger.error(f"获取用户交互历史失败: {e}")
+            return []
     
     def get_active_users(self) -> List[Dict]:
         """获取所有活跃用户"""
@@ -647,4 +724,50 @@ class WhatsAppFlowService:
             
         except Exception as e:
             logger.error(f"获取活跃用户失败: {e}")
-            return [] 
+            return []
+    
+    def get_usage_statistics(self) -> Dict:
+        """获取使用统计"""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            
+            # 总用户数
+            cursor.execute('SELECT COUNT(*) FROM user_preferences')
+            total_users = cursor.fetchone()[0]
+            
+            # 活跃用户数
+            cursor.execute('SELECT COUNT(*) FROM user_preferences WHERE status = "active"')
+            active_users = cursor.fetchone()[0]
+            
+            # 专科分布
+            cursor.execute('''
+            SELECT specialty, COUNT(*) FROM user_preferences 
+            WHERE status = "active" GROUP BY specialty
+            ''')
+            specialty_distribution = dict(cursor.fetchall())
+            
+            # 地区分布（按邮编前缀）
+            cursor.execute('''
+            SELECT SUBSTR(postcode, 1, 2) as postcode_prefix, COUNT(*) 
+            FROM user_preferences 
+            WHERE status = "active" AND postcode IS NOT NULL
+            GROUP BY postcode_prefix
+            ORDER BY COUNT(*) DESC
+            LIMIT 10
+            ''')
+            regional_distribution = dict(cursor.fetchall())
+            
+            conn.close()
+            
+            return {
+                'total_users': total_users,
+                'active_users': active_users,
+                'specialty_distribution': specialty_distribution,
+                'regional_distribution': regional_distribution,
+                'timestamp': datetime.now().isoformat()
+            }
+            
+        except Exception as e:
+            logger.error(f"获取使用统计失败: {e}")
+            return {'error': str(e)} 

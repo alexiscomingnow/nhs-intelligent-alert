@@ -1,0 +1,665 @@
+2025-07-13 19:20:21,835 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-13 19:20:22,558 - __main__ - ERROR - System initialization failed: 'IntelligentAlertEngine' object has no attribute 'start_monitoring'
+2025-07-13 19:26:53,781 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-13 19:33:51,983 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-13 19:33:52,053 - intelligent_alert_engine - INFO - 提醒引擎数据库初始化完成
+2025-07-13 19:33:52,355 - gp_slot_monitor - INFO - GP空位监控数据库初始化完成
+2025-07-13 19:33:52,386 - gp_slot_monitor - INFO - 开始GP空位监控，检查间隔: 5分钟
+2025-07-13 19:33:52,389 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 19:33:52,391 - intelligent_alert_engine - ERROR - 获取活跃用户失败: no such table: user_preferences
+2025-07-13 19:33:52,394 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 19:33:52,394 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 19:33:52,419 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 19:33:52,437 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 19:33:52,438 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 26, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 19:34:26,571 - gp_slot_monitor - INFO - GP空位监控已停止
+2025-07-13 19:34:39,293 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-13 19:34:39,328 - intelligent_alert_engine - INFO - 提醒引擎数据库初始化完成
+2025-07-13 19:34:39,566 - gp_slot_monitor - INFO - GP空位监控数据库初始化完成
+2025-07-13 19:34:39,599 - gp_slot_monitor - INFO - 开始GP空位监控，检查间隔: 5分钟
+2025-07-13 19:34:39,601 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 19:34:39,601 - intelligent_alert_engine - ERROR - 获取活跃用户失败: no such table: user_preferences
+2025-07-13 19:34:39,602 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 19:34:39,603 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 19:34:39,621 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 19:34:39,644 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 19:34:39,645 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 23, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 19:39:39,611 - intelligent_alert_engine - ERROR - 获取活跃用户失败: no such table: user_preferences
+2025-07-13 19:39:39,615 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 19:39:39,615 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 19:39:39,677 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 19:39:39,709 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 19:39:39,737 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 19:39:39,738 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 15, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 19:39:53,108 - gp_slot_monitor - INFO - GP空位监控已停止
+2025-07-13 19:41:00,796 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-13 19:41:00,871 - intelligent_alert_engine - INFO - 提醒引擎数据库初始化完成
+2025-07-13 19:41:01,205 - gp_slot_monitor - INFO - GP空位监控数据库初始化完成
+2025-07-13 19:41:01,233 - gp_slot_monitor - INFO - 开始GP空位监控，检查间隔: 5分钟
+2025-07-13 19:41:01,236 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 19:41:01,237 - intelligent_alert_engine - ERROR - 获取活跃用户失败: no such table: user_preferences
+2025-07-13 19:41:01,238 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 19:41:01,239 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 19:41:01,258 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 19:41:01,279 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 19:41:01,279 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 14, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 19:42:10,163 - gp_slot_monitor - INFO - GP空位监控已停止
+2025-07-13 19:42:41,365 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-13 19:42:41,444 - intelligent_alert_engine - INFO - 提醒引擎数据库初始化完成
+2025-07-13 19:42:41,756 - gp_slot_monitor - INFO - GP空位监控数据库初始化完成
+2025-07-13 19:42:41,784 - gp_slot_monitor - INFO - 开始GP空位监控，检查间隔: 5分钟
+2025-07-13 19:42:41,787 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 19:42:41,788 - intelligent_alert_engine - ERROR - 获取活跃用户失败: no such table: user_preferences
+2025-07-13 19:42:41,789 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 19:42:41,789 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 19:42:41,805 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 19:42:41,829 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 19:42:41,829 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 10, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 19:47:41,804 - intelligent_alert_engine - ERROR - 获取活跃用户失败: no such table: user_preferences
+2025-07-13 19:47:41,806 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 19:47:41,806 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 19:47:41,853 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 19:47:41,878 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 19:47:41,898 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 19:47:41,898 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 19, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 19:52:41,821 - intelligent_alert_engine - ERROR - 获取活跃用户失败: no such table: user_preferences
+2025-07-13 19:52:41,825 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 19:52:41,826 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 19:52:41,933 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 19:52:41,977 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 19:52:42,020 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 19:52:42,020 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 20, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 19:57:41,817 - intelligent_alert_engine - ERROR - 获取活跃用户失败: no such table: user_preferences
+2025-07-13 19:57:41,818 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 19:57:41,818 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 19:57:42,061 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 19:57:42,169 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 19:57:42,225 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 19:57:42,226 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 19, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 20:01:20,609 - gp_slot_monitor - INFO - GP空位监控已停止
+2025-07-13 20:01:56,840 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-13 20:01:56,877 - intelligent_alert_engine - INFO - 提醒引擎数据库初始化完成
+2025-07-13 20:01:57,154 - gp_slot_monitor - INFO - GP空位监控数据库初始化完成
+2025-07-13 20:01:57,187 - gp_slot_monitor - INFO - 开始GP空位监控，检查间隔: 5分钟
+2025-07-13 20:01:57,189 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 20:01:57,193 - intelligent_alert_engine - ERROR - 获取活跃用户失败: no such table: user_preferences
+2025-07-13 20:01:57,194 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 20:01:57,194 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 20:01:57,212 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 20:01:57,230 - gp_slot_monitor - ERROR - 获取关注用户失败: no such table: user_preferences
+2025-07-13 20:01:57,230 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 13, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 20:05:03,463 - gp_slot_monitor - INFO - GP空位监控已停止
+2025-07-13 20:05:24,324 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-13 20:05:24,398 - intelligent_alert_engine - INFO - 提醒引擎数据库初始化完成
+2025-07-13 20:05:24,709 - gp_slot_monitor - INFO - GP空位监控数据库初始化完成
+2025-07-13 20:05:24,749 - gp_slot_monitor - INFO - 开始GP空位监控，检查间隔: 5分钟
+2025-07-13 20:05:24,752 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 20:05:24,754 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 20:05:24,755 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 20:05:24,793 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 20, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 20:10:24,759 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 20:10:24,759 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 20:10:24,817 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 20:10:24,879 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 13, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 20:15:24,770 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 20:15:24,775 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 20:15:24,888 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 20:15:24,967 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 18, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 20:20:24,782 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 20:20:24,782 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 20:20:24,975 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 20:20:25,037 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 24, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 20:25:24,819 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 20:25:24,821 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 20:25:25,079 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 20:25:25,159 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 24, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 20:30:24,854 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 20:30:24,855 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 20:30:25,162 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 20:30:25,230 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 24, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 20:35:24,874 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 20:35:24,874 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 20:35:25,247 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 20:35:25,334 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 18, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 20:40:24,881 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 20:40:24,886 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 20:40:25,348 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 20:40:25,431 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 18, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 20:45:24,890 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 20:45:24,890 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 20:45:25,458 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 20:45:25,537 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 24, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 20:50:24,896 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 20:50:24,896 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 20:50:25,569 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 20:50:25,633 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 21, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 20:55:24,916 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 20:55:24,916 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 20:55:25,649 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 20:55:25,683 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 8, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 21:00:24,935 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 21:00:24,935 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 21:00:25,709 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 21:00:25,779 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 23, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 21:05:24,956 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 21:05:24,956 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 21:05:25,799 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 21:05:25,901 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 21, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 21:10:24,970 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 21:10:24,973 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 21:10:25,929 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 21:10:25,997 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 13, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 21:15:25,003 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 21:15:25,003 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 21:15:26,024 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 21:15:26,087 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 10, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 21:20:25,035 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 21:20:25,035 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 21:20:26,124 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 21:20:26,207 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 21, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 21:25:25,076 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 21:25:25,076 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 21:25:26,220 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 21:25:26,306 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 21, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 21:32:25,295 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 21:32:25,296 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 21:32:32,459 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 21:32:32,650 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 21, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 21:37:32,464 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 21:37:32,465 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 21:37:32,730 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 21:37:32,806 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 21, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 21:42:32,476 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 21:42:32,477 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 21:42:32,839 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 21:42:32,881 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 19, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 21:47:32,499 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 21:47:32,501 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 21:47:32,890 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 21:47:32,957 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 22, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 21:52:32,519 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 21:52:32,521 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 21:52:32,973 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 21:52:33,078 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 22, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 21:57:32,526 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 21:57:32,526 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 21:57:33,103 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 21:57:33,197 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 23, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 21:57:39,462 - gp_slot_monitor - INFO - GP空位监控已停止
+2025-07-13 21:57:55,404 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-13 21:57:55,440 - intelligent_alert_engine - INFO - 提醒引擎数据库初始化完成
+2025-07-13 21:57:55,700 - gp_slot_monitor - INFO - GP空位监控数据库初始化完成
+2025-07-13 21:57:55,734 - gp_slot_monitor - INFO - 开始GP空位监控，检查间隔: 5分钟
+2025-07-13 21:57:55,736 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 21:57:55,738 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 21:57:55,738 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 21:57:55,780 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 25, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 22:02:55,759 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 22:02:55,762 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 22:02:55,807 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 22:02:55,981 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 21, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 22:07:55,761 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 22:07:55,762 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 22:07:56,074 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 22:07:56,144 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 15, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 22:12:55,770 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 22:12:55,770 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 22:12:56,179 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 22:12:56,264 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 20, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 22:17:55,790 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 22:17:55,791 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 22:17:56,290 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 22:17:56,360 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 19, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 22:22:55,810 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 22:22:55,811 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 22:22:56,397 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 22:22:56,491 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 27, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 22:27:55,831 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 22:27:55,838 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 22:27:56,537 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 22:27:56,624 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 24, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 22:32:55,847 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 22:32:55,848 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 22:32:56,649 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 22:32:56,724 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 16, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 22:37:55,865 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 22:37:55,866 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 22:37:56,749 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 22:37:56,811 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 20, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 22:42:55,882 - intelligent_alert_engine - INFO - 开始检查提醒: 0个用户, 8个规则
+2025-07-13 22:42:55,882 - intelligent_alert_engine - INFO - 提醒检查完成: 生成 0 个提醒事件, 处理 0 个
+2025-07-13 22:42:56,848 - gp_slot_monitor - INFO - 开始检查 2 个GP实践
+2025-07-13 22:42:56,913 - gp_slot_monitor - INFO - 监控周期完成: {'practices_checked': 2, 'slots_found': 24, 'alerts_generated': 0, 'api_calls_made': 2, 'errors_count': 0}
+2025-07-13 22:45:31,747 - gp_slot_monitor - INFO - GP空位监控已停止
+2025-07-13 22:46:31,196 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-13 22:46:31,567 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-13 22:46:31,567 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-13 22:46:31,627 - telegram_bot_server - INFO - Starting polling mode for development...
+2025-07-13 22:47:30,849 - telegram_bot_server - INFO - Auto-registered new user: 7578790425 (@)
+2025-07-13 22:47:30,999 - telegram_bot_server - INFO - Message sent to 7578790425
+2025-07-13 22:47:31,180 - telegram_bot_server - INFO - Message sent to 7578790425
+2025-07-13 22:49:01,389 - telegram_bot_server - INFO - Message sent to 7578790425
+2025-07-13 22:49:18,063 - telegram_bot_server - INFO - Message sent to 7578790425
+2025-07-13 22:49:56,632 - telegram_bot_server - INFO - Saved user preferences for 7578790425: BT37 0ZP, Cardiology, 12w
+2025-07-13 22:49:56,789 - telegram_bot_server - INFO - Message sent to 7578790425
+2025-07-13 22:50:37,139 - TelegramDriver - ERROR - Failed to get user preferences: Expecting value: line 1 column 1 (char 0)
+2025-07-13 22:51:01,954 - TelegramDriver - ERROR - Failed to get user preferences: Expecting value: line 1 column 1 (char 0)
+2025-07-13 22:51:08,334 - telegram_bot_server - INFO - Message sent to 7578790425
+2025-07-13 23:06:57,240 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-13 23:06:57,632 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-13 23:06:57,632 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-13 23:06:57,690 - telegram_bot_server - INFO - Starting polling mode for development...
+2025-07-13 23:07:12,443 - telegram_bot_server - INFO - Message sent to 7578790425
+2025-07-13 23:07:39,081 - telegram_bot_server - INFO - Message sent to 7578790425
+2025-07-13 23:07:54,174 - telegram_bot_server - INFO - Message sent to 7578790425
+2025-07-13 23:08:12,825 - telegram_bot_server - INFO - Message sent to 7578790425
+2025-07-13 23:08:25,222 - telegram_bot_server - INFO - Message sent to 7578790425
+2025-07-13 23:09:45,665 - telegram_bot_server - INFO - Saved user preferences for 7578790425: BT37 0ZP, Ophthalmology, 12w
+2025-07-13 23:09:45,798 - telegram_bot_server - INFO - Message sent to 7578790425
+2025-07-13 23:26:19,209 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-13 23:26:19,627 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-13 23:26:19,627 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-13 23:26:19,685 - telegram_bot_server - INFO - Starting polling mode for development...
+2025-07-13 23:28:06,048 - telegram_bot_server - INFO - Message sent to 7578790425
+2025-07-13 23:28:25,512 - telegram_bot_server - INFO - Message sent to 7578790425
+2025-07-13 23:28:39,478 - telegram_bot_server - INFO - Message sent to 7578790425
+2025-07-13 23:28:46,870 - telegram_bot_server - INFO - Saved user preferences for 7578790425: BT37 0ZP, Ophthalmology, 12w
+2025-07-13 23:28:47,044 - telegram_bot_server - INFO - Message sent to 7578790425
+2025-07-14 00:22:58,642 - telegram_bot_server - ERROR - Polling error: Cannot connect to host api.telegram.org:443 ssl:default [信号灯超时时间已到]
+2025-07-14 09:59:20,773 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-14 09:59:22,882 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-14 09:59:22,882 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-14 09:59:23,047 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-14 09:59:23,693 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 12:07:51,890 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-14 12:07:52,484 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-14 12:07:52,484 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-14 12:07:52,546 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-14 12:07:52,843 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 12:07:53,015 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 12:09:53,966 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 12:10:32,956 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 12:14:43,021 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 12:15:13,365 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 12:15:29,187 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 13:08:41,860 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-14 13:08:42,232 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-14 13:08:42,232 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-14 13:08:42,282 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-14 13:14:21,149 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 13:14:27,841 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 13:14:42,754 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 13:44:18,007 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-14 13:44:18,986 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-14 13:44:18,986 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-14 13:44:19,064 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-14 13:45:19,076 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-14 13:45:19,647 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-14 13:45:19,647 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-14 13:45:19,702 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-14 13:45:19,794 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:45:19,797 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-14 13:45:24,995 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:45:24,995 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-14 13:45:30,197 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:45:30,197 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
+2025-07-14 13:45:40,394 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:45:40,399 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
+2025-07-14 13:45:50,599 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:45:50,604 - telegram_bot_server - INFO - Sleeping for 15 seconds after error...
+2025-07-14 13:46:05,840 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:46:05,845 - telegram_bot_server - INFO - Sleeping for 15 seconds after error...
+2025-07-14 13:46:21,054 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:46:21,054 - telegram_bot_server - INFO - Sleeping for 20 seconds after error...
+2025-07-14 13:46:41,288 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:46:41,288 - telegram_bot_server - INFO - Sleeping for 20 seconds after error...
+2025-07-14 13:47:01,559 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:47:01,564 - telegram_bot_server - INFO - Sleeping for 25 seconds after error...
+2025-07-14 13:47:26,785 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:47:26,790 - telegram_bot_server - INFO - Sleeping for 25 seconds after error...
+2025-07-14 13:47:52,010 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:47:52,015 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-14 13:48:22,214 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:48:22,219 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-14 13:48:52,425 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:48:52,430 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-14 13:49:22,719 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:49:22,719 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-14 13:49:27,935 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:49:27,940 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-14 13:49:58,178 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:49:58,178 - telegram_bot_server - ERROR - Too many consecutive errors (10), sleeping for 60 seconds...
+2025-07-14 13:50:58,378 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:50:58,378 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-14 13:51:03,572 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:51:03,572 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-14 13:51:08,789 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:51:08,795 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
+2025-07-14 13:51:18,996 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:51:19,001 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
+2025-07-14 13:51:29,240 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:51:29,701 - telegram_bot_server - INFO - Sleeping for 15 seconds after error...
+2025-07-14 13:51:44,944 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:51:44,944 - telegram_bot_server - INFO - Sleeping for 15 seconds after error...
+2025-07-14 13:52:00,160 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:52:00,161 - telegram_bot_server - INFO - Sleeping for 20 seconds after error...
+2025-07-14 13:52:20,361 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:52:20,366 - telegram_bot_server - INFO - Sleeping for 20 seconds after error...
+2025-07-14 13:52:40,574 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:52:40,574 - telegram_bot_server - INFO - Sleeping for 25 seconds after error...
+2025-07-14 13:53:05,801 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-14 13:53:05,806 - telegram_bot_server - INFO - Sleeping for 25 seconds after error...
+2025-07-14 14:06:12,005 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-14 14:06:12,560 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-14 14:06:12,560 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-14 14:06:12,614 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-14 14:06:34,182 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 14:06:40,271 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 15:12:34,699 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-14 15:12:35,281 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-14 15:12:35,281 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-14 15:12:35,361 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-14 15:17:53,776 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 15:17:59,606 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 15:43:34,740 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-14 15:43:35,113 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-14 15:43:35,114 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-14 15:43:35,176 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-14 15:43:59,496 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 15:44:07,316 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 15:58:47,101 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 15:58:59,958 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 15:59:08,756 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 15:59:18,059 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 15:59:38,611 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 15:59:51,720 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 16:00:00,349 - telegram_driver - INFO - 保存用户偏好成功: 7578790425
+2025-07-14 16:00:00,496 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 16:00:20,529 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 16:00:27,124 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 16:00:48,580 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 16:01:32,568 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 16:01:37,152 - telegram_driver - INFO - 保存用户偏好成功: 7578790425
+2025-07-14 16:01:37,291 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 16:01:45,483 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 16:01:51,367 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 16:02:23,749 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 16:40:57,009 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-14 16:40:57,369 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-14 16:40:57,369 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-14 16:40:57,411 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-14 16:53:41,544 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 16:53:49,756 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 16:54:19,502 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 16:54:58,387 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 16:55:23,223 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 16:59:58,622 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 17:00:09,603 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 17:00:14,232 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 18:26:07,562 - telegram_bot_server - ERROR - Polling timeout - retrying...
+2025-07-14 18:26:07,567 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-14 18:30:37,959 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-14 18:30:38,345 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-14 18:30:38,345 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-14 18:30:38,395 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-14 18:31:23,598 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 18:31:32,608 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 18:31:52,906 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 18:32:24,486 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 18:32:44,894 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 18:32:52,834 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 18:32:59,292 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 18:33:01,726 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 18:44:12,946 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-14 18:44:18,445 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 00:40:02,478 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 00:40:03,143 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 00:40:03,143 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 00:40:03,198 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 00:41:07,401 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 00:41:12,013 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 00:41:17,975 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 00:42:18,928 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 00:42:30,062 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 00:42:33,962 - telegram_driver - INFO - 保存用户偏好成功: 7578790425
+2025-07-16 00:42:34,058 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 01:07:21,343 - __main__ - ERROR - Service initialization failed: unexpected indent (telegram_driver.py, line 527)
+2025-07-16 01:07:21,343 - __main__ - ERROR - System startup failed: unexpected indent (telegram_driver.py, line 527)
+2025-07-16 01:24:36,453 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 01:24:36,825 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 01:24:36,825 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 01:24:36,877 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 01:24:47,656 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 01:25:00,784 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 01:25:40,002 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 01:26:16,658 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 01:26:34,713 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:05:49,671 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 02:05:50,145 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 02:05:50,145 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 02:05:50,543 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 02:06:12,524 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:06:25,135 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:06:48,718 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:07:21,789 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:10:53,684 - telegram_bot_server - ERROR - HTTP error: 429
+2025-07-16 02:10:53,685 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 02:22:28,824 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 02:22:29,565 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 02:22:29,566 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 02:22:29,614 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 02:22:45,667 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:23:06,334 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:23:47,558 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:24:09,537 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:24:24,821 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:24:58,826 - telegram_driver - ERROR - 处理用户消息失败: 'TelegramDriver' object has no attribute '_handle_custom_preferences_input'
+2025-07-16 02:24:58,926 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:25:12,591 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:25:23,059 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:25:37,950 - telegram_driver - ERROR - 处理用户消息失败: 'TelegramDriver' object has no attribute '_handle_custom_preferences_input'
+2025-07-16 02:25:38,063 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:26:04,652 - telegram_driver - INFO - 保存用户偏好成功: 7578790425
+2025-07-16 02:26:04,785 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:26:26,746 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:26:37,483 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:26:45,121 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:45:09,449 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 02:45:09,831 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 02:45:09,831 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 02:45:09,879 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 02:46:40,355 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:46:58,665 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:47:04,273 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:49:33,517 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 02:49:35,381 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 02:49:35,381 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 02:49:35,447 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 02:49:35,575 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:49:35,577 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 02:49:40,785 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:49:40,786 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 02:49:46,011 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:49:46,012 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
+2025-07-16 02:49:56,211 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:49:56,212 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
+2025-07-16 02:50:06,419 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:50:06,422 - telegram_bot_server - INFO - Sleeping for 15 seconds after error...
+2025-07-16 02:50:21,622 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:50:21,623 - telegram_bot_server - INFO - Sleeping for 15 seconds after error...
+2025-07-16 02:50:36,867 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:50:36,868 - telegram_bot_server - INFO - Sleeping for 20 seconds after error...
+2025-07-16 02:50:58,332 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 02:50:58,672 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 02:50:58,672 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 02:50:58,717 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 02:50:58,798 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:50:58,799 - telegram_bot_server - INFO - Sleeping for 20 seconds after error...
+2025-07-16 02:51:12,698 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:51:19,010 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:51:19,012 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 02:51:19,758 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:51:24,225 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:51:24,227 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 02:51:24,736 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:51:29,459 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:51:29,463 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 02:51:34,693 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:51:34,696 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
+2025-07-16 02:51:44,929 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:51:53,575 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
+2025-07-16 02:52:03,829 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:52:03,830 - telegram_bot_server - INFO - Sleeping for 15 seconds after error...
+2025-07-16 02:52:19,068 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:52:19,070 - telegram_bot_server - INFO - Sleeping for 15 seconds after error...
+2025-07-16 02:52:34,288 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:52:34,289 - telegram_bot_server - INFO - Sleeping for 20 seconds after error...
+2025-07-16 02:52:54,474 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:52:54,476 - telegram_bot_server - INFO - Sleeping for 20 seconds after error...
+2025-07-16 02:53:14,721 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:53:14,728 - telegram_bot_server - INFO - Sleeping for 25 seconds after error...
+2025-07-16 02:53:39,976 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:53:39,976 - telegram_bot_server - INFO - Sleeping for 25 seconds after error...
+2025-07-16 02:54:05,165 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:54:05,166 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-16 02:54:35,387 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:54:35,388 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 02:54:40,601 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:54:40,602 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-16 02:55:10,824 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:55:10,826 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 02:55:16,042 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:55:16,043 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-16 02:55:46,258 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:55:46,259 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-16 02:56:16,470 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:56:16,471 - telegram_bot_server - ERROR - Too many consecutive errors (10), sleeping for 60 seconds...
+2025-07-16 02:57:16,924 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:57:16,989 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 02:57:22,341 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:57:22,342 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 02:57:27,534 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:57:27,535 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
+2025-07-16 02:58:25,133 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 02:58:25,735 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 02:58:25,741 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 02:58:25,857 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 02:58:25,971 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:58:25,973 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 02:58:31,182 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:58:31,183 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 02:58:36,417 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:58:36,422 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
+2025-07-16 02:58:43,962 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:58:46,643 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:58:46,644 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 02:58:51,858 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:58:51,859 - telegram_bot_server - INFO - Sleeping for 15 seconds after error...
+2025-07-16 02:58:52,245 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:58:55,710 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 02:59:07,066 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:59:07,069 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 02:59:12,317 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:59:12,318 - telegram_bot_server - INFO - Sleeping for 20 seconds after error...
+2025-07-16 02:59:32,689 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:59:32,706 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
+2025-07-16 02:59:43,069 - telegram_bot_server - ERROR - HTTP error: 409
+2025-07-16 02:59:43,073 - telegram_bot_server - INFO - Sleeping for 25 seconds after error...
+2025-07-16 03:03:32,550 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 03:03:33,224 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 03:03:33,224 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 03:03:33,683 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 03:03:54,989 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 03:03:58,771 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 03:09:24,558 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 03:09:25,090 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 03:09:25,091 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 03:09:25,180 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 03:09:36,368 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 03:09:40,028 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 03:10:36,506 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 03:27:19,613 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 03:27:19,613 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 03:27:24,747 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 03:27:24,749 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
+2025-07-16 03:27:34,849 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 03:27:34,849 - telegram_bot_server - INFO - Sleeping for 15 seconds after error...
+2025-07-16 03:27:49,956 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 03:27:49,956 - telegram_bot_server - INFO - Sleeping for 20 seconds after error...
+2025-07-16 03:28:10,076 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 03:28:10,076 - telegram_bot_server - INFO - Sleeping for 25 seconds after error...
+2025-07-16 11:36:56,709 - telegram_bot_server - ERROR - Polling timeout - retrying...
+2025-07-16 11:37:04,729 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 11:37:09,878 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:37:09,893 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
+2025-07-16 11:37:31,064 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:37:31,064 - telegram_bot_server - INFO - Sleeping for 15 seconds after error...
+2025-07-16 11:37:46,173 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:37:46,173 - telegram_bot_server - INFO - Sleeping for 20 seconds after error...
+2025-07-16 11:38:06,347 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:38:06,359 - telegram_bot_server - INFO - Sleeping for 25 seconds after error...
+2025-07-16 11:38:42,531 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:38:42,534 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-16 11:42:46,184 - telegram_bot_server - ERROR - Polling timeout - retrying...
+2025-07-16 11:42:46,185 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 11:43:12,558 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [由本地系统中止网络连接。]
+2025-07-16 11:43:12,595 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
+2025-07-16 11:43:33,838 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:43:33,841 - telegram_bot_server - INFO - Sleeping for 15 seconds after error...
+2025-07-16 11:43:48,972 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:43:48,972 - telegram_bot_server - INFO - Sleeping for 20 seconds after error...
+2025-07-16 11:44:09,094 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:44:09,094 - telegram_bot_server - INFO - Sleeping for 25 seconds after error...
+2025-07-16 11:44:34,211 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:44:34,212 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-16 11:45:04,369 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:45:04,370 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-16 11:45:34,487 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:45:34,488 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-16 11:46:04,618 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:46:04,619 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-16 11:46:34,748 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:46:34,749 - telegram_bot_server - ERROR - Too many consecutive errors (10), sleeping for 60 seconds...
+2025-07-16 11:47:34,872 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:47:34,872 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 11:47:39,991 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:47:39,991 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
+2025-07-16 11:47:50,115 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:47:50,116 - telegram_bot_server - INFO - Sleeping for 15 seconds after error...
+2025-07-16 11:48:05,242 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:48:05,242 - telegram_bot_server - INFO - Sleeping for 20 seconds after error...
+2025-07-16 11:48:25,372 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:48:25,373 - telegram_bot_server - INFO - Sleeping for 25 seconds after error...
+2025-07-16 11:48:50,505 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:48:50,506 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-16 11:49:20,634 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:49:20,635 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-16 11:49:50,752 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:49:50,753 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-16 11:50:20,879 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:50:20,879 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-16 11:50:51,003 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:50:51,003 - telegram_bot_server - ERROR - Too many consecutive errors (10), sleeping for 60 seconds...
+2025-07-16 11:51:51,132 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:51:51,133 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 11:51:56,263 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:51:56,265 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
+2025-07-16 11:52:06,412 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:52:06,414 - telegram_bot_server - INFO - Sleeping for 15 seconds after error...
+2025-07-16 11:52:21,545 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 11:52:21,545 - telegram_bot_server - INFO - Sleeping for 20 seconds after error...
+2025-07-16 12:38:22,899 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:True [SSLCertVerificationError: (1, "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'api.telegram.org'. (_ssl.c:1010)")]
+2025-07-16 12:38:22,899 - telegram_bot_server - INFO - Sleeping for 25 seconds after error...
+2025-07-16 12:38:48,078 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:True [SSLCertVerificationError: (1, "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'api.telegram.org'. (_ssl.c:1010)")]
+2025-07-16 12:38:48,079 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-16 12:39:18,253 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:True [SSLCertVerificationError: (1, "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'api.telegram.org'. (_ssl.c:1010)")]
+2025-07-16 12:39:18,255 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-16 12:39:48,494 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:True [SSLCertVerificationError: (1, "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'api.telegram.org'. (_ssl.c:1010)")]
+2025-07-16 12:39:48,495 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-16 12:40:18,684 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:True [SSLCertVerificationError: (1, "[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'api.telegram.org'. (_ssl.c:1010)")]
+2025-07-16 12:40:18,686 - telegram_bot_server - INFO - Sleeping for 30 seconds after error...
+2025-07-16 12:43:27,657 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 12:43:28,025 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 12:43:28,026 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 12:43:28,071 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 12:43:51,981 - telegram_driver - INFO - Message sent successfully to 7578790425
