@@ -51,6 +51,10 @@ class TelegramDriver:
     def process_user_message(self, chat_id: str, message_text: str, user_name: str = None) -> bool:
         """处理用户消息 - 增强版本，支持语言选择"""
         try:
+            # 特殊命令：强制语言选择
+            if message_text.lower() in ['language', 'lang', '语言', '/language', 'change_language', '切换语言']:
+                return self._handle_language_selection(chat_id, message_text, user_name)
+            
             # 检查用户是否已选择语言
             if not self._has_language_preference(chat_id):
                 return self._handle_language_selection(chat_id, message_text, user_name)
@@ -220,6 +224,7 @@ class TelegramDriver:
 *4* - {get_language_text(user_lang, 'option_reset')}
 *5* - {get_language_text(user_lang, 'option_help')}
 *6* - {get_language_text(user_lang, 'option_stop')}
+*7* - {get_language_text(user_lang, 'option_test_daily')}
 
 💡 {get_language_text(user_lang, 'simple_instruction')}"""
             
@@ -230,14 +235,49 @@ class TelegramDriver:
             return False
 
     def _handle_numbered_command(self, chat_id: str, number: int, user_lang: str = 'en') -> bool:
-        """处理编号命令"""
+        """处理数字命令 - 改进版本，支持多语言和设置流程"""
         try:
-            # 首先检查用户是否已有完成的偏好设置
-            has_preferences = self.get_user_preferences(chat_id) is not None
+            # 检查是否在设置流程中
+            if chat_id in self.user_sessions:
+                session = self.user_sessions[chat_id]
+                step = session.get('step', 1)
+                
+                # 如果在第2步（专科选择），将数字作为专科选择处理
+                if step == 2:
+                    # 专科选择允许1-20
+                    if 1 <= number <= 20:
+                        return self._handle_specialty_input(chat_id, str(number), user_lang)
+                    else:
+                        # 专科选择超出范围
+                        if user_lang == 'zh':
+                            error_text = """❌ 无效选择。请输入数字 1-20
+
+您可以选择：
+• 数字 1-20 (对应专科列表)
+• 英文专科名称 (如: Cardiology)  
+• 中文专科名称 (如: 心脏科)
+• 常用术语 (如: 心脏、骨头、皮肤)
+
+请重新选择："""
+                        else:
+                            error_text = """❌ Invalid choice. Please enter number 1-20
+
+You can choose:
+• Number 1-20 (corresponding to specialty list)
+• English specialty name (e.g., Cardiology)
+• Common terms (e.g., heart, bone, skin)
+
+Please try again:"""
+                        
+                        return self._send_telegram_message(chat_id, error_text, parse_mode='Markdown')
+                
+                # 如果在其他步骤，让setup_flow处理
+                else:
+                    return self._handle_setup_flow(chat_id, str(number), user_lang)
             
-            # 如果用户已有偏好设置，优先处理主菜单命令
-            if has_preferences:
-                # 主菜单命令 (对于已有偏好的用户)
+            # 不在设置流程中，检查是否为现有用户
+            elif self._has_user_preferences(chat_id):
+                # 现有用户主菜单命令 (1-7)
                 if number == 1:
                     return self._show_my_status(chat_id, user_lang)
                 elif number == 2:
@@ -253,30 +293,20 @@ class TelegramDriver:
                     return self._send_help_menu(chat_id, user_lang)
                 elif number == 6:
                     return self._handle_unsubscribe(chat_id, user_lang)
+                elif number == 7:
+                    return self._handle_test_daily_alert(chat_id, user_lang)
                 else:
-                    return self._send_invalid_choice(chat_id, "1-6", user_lang)
+                    return self._send_invalid_choice(chat_id, "1-7", user_lang)
             else:
-                # 新用户命令或设置流程
-                if chat_id in self.user_sessions:
-                    session = self.user_sessions[chat_id]
-                    step = session.get('step', 1)
-                    
-                    # 如果在第2步（专科选择），将数字作为专科选择处理
-                    if step == 2:
-                        return self._handle_specialty_input(chat_id, str(number), user_lang)
-                    # 如果在其他步骤，让setup_flow处理
-                    else:
-                        return self._handle_setup_flow(chat_id, str(number), user_lang)
+                # 新用户初始菜单命令 (1-3)
+                if number == 1:
+                    return self._start_setup_flow(chat_id, user_lang)
+                elif number == 2:
+                    return self._send_usage_guide(chat_id, user_lang)
+                elif number == 3:
+                    return self._show_feature_overview(chat_id, user_lang)
                 else:
-                    # 新用户初始菜单
-                    if number == 1:
-                        return self._start_setup_flow(chat_id, user_lang)
-                    elif number == 2:
-                        return self._send_usage_guide(chat_id, user_lang)
-                    elif number == 3:
-                        return self._show_feature_overview(chat_id, user_lang)
-                    else:
-                        return self._send_invalid_choice(chat_id, "1-3", user_lang)
+                    return self._send_invalid_choice(chat_id, "1-3", user_lang)
         except Exception as e:
             self.logger.error(f"处理编号命令失败: {e}")
             return False
@@ -356,36 +386,32 @@ class TelegramDriver:
         self.logger.error(f"Failed to send message after {max_retries} attempts")
         return False
 
-    def get_user_preferences(self, chat_id: str) -> Optional[Dict]:
+    def get_user_preferences(self, chat_id: str) -> dict:
         """获取用户偏好设置"""
         try:
             conn = sqlite3.connect(self.db_path)
             cursor = conn.cursor()
             
             user_id = f"telegram_{chat_id}"
-            cursor.execute("""
-                SELECT user_id, phone_number, postcode, specialty, threshold_weeks, radius_km, 
-                       notification_types, language, status, created_at, updated_at
-                FROM user_preferences WHERE user_id = ?
-            """, (user_id,))
+            cursor.execute('''
+                SELECT postcode, specialty, threshold_weeks, radius_km, notification_types, status
+                FROM user_preferences 
+                WHERE user_id = ?
+            ''', (user_id,))
             
-            row = cursor.fetchone()
+            result = cursor.fetchone()
             conn.close()
             
-            if row:
+            if result:
                 return {
-                    'user_id': row[0],
-                    'phone_number': row[1],
-                    'postcode': row[2],
-                    'specialty': row[3],
-                    'threshold_weeks': row[4],
-                    'radius_km': row[5],
-                    'notification_types': json.loads(row[6]) if row[6] else [],
-                    'language': row[7] or 'en',
-                    'status': row[8],
-                    'created_at': row[9],
-                    'updated_at': row[10]
+                    'postcode': result[0],
+                    'specialty': result[1],
+                    'threshold_weeks': result[2],
+                    'radius_km': result[3],
+                    'notification_types': json.loads(result[4]) if result[4] else [],
+                    'status': result[5]
                 }
+            
             return None
             
         except Exception as e:
@@ -585,7 +611,7 @@ Please enter your postcode again:"""
 1️⃣6️⃣ Rheumatology (风湿科) - 关节炎、自身免疫病
 1️⃣7️⃣ Haematology (血液科) - 血液病、白血病、贫血
 
-**🩸 内科系统**
+**�� 内科系统**
 1️⃣8️⃣ Nephrology (肾科) - 肾病、透析、肾移植
 1️⃣9️⃣ Respiratory Medicine (呼吸科) - 哮喘、肺病、睡眠呼吸
 
@@ -1091,7 +1117,7 @@ Please try again:"""
 📋 Use **1** to check current status
 ❓ Use **help** for assistance
 
-💡 You can ask natural language questions anytime, like: "How long is the cardiology wait?" or "Any shorter options near me?" """
+💡 You can ask natural language questions anytime, like: "How long is cardiology wait?" or "Any shorter options near me?" """
         
         return self._send_telegram_message(chat_id, success_text, parse_mode='Markdown')
 
@@ -1282,22 +1308,208 @@ Possible reasons:
 
     def _send_help_menu(self, chat_id: str, user_lang: str = 'en') -> bool:
         """发送帮助菜单"""
-        help_text = get_language_text(user_lang, 'help_title') + "\n\n"
-        help_text += "帮助内容" if user_lang == 'zh' else "Help content"
-        
-        return self._send_telegram_message(chat_id, help_text, parse_mode='Markdown')
+        try:
+            if user_lang == 'zh':
+                help_text = """❓ **帮助与支持**
+
+🔧 **主要功能**：
+*1* - 查看状态：检查您的监控设置和当前状态
+*2* - 最近提醒：查看最近收到的等候时间提醒
+*3* - 等候趋势：分析等候时间变化趋势
+*4* - 重置设置：重新配置您的偏好
+*7* - 测试每日提醒：预览每日提醒内容
+
+🗣️ **自然语言查询**：
+• "心脏科等候多久？"
+• "附近有什么医院？"
+• "等候时间有变化吗？"
+
+💡 **使用技巧**：
+• 输入数字快速选择功能
+• 直接描述您的问题获得帮助
+• 设置后系统会自动监控并提醒
+
+📞 **需要更多帮助？**
+• 描述具体问题，我会尽力协助
+• 输入"4"重新设置如遇到问题
+• 系统7x24小时为您服务"""
+            else:
+                help_text = """❓ **Help & Support**
+
+🔧 **Main Functions**:
+*1* - View Status: Check your monitoring settings and current status
+*2* - Recent Alerts: See latest waiting time notifications
+*3* - Waiting Trends: Analyze waiting time changes
+*4* - Reset Settings: Reconfigure your preferences
+*7* - Test Daily Alert: Preview daily alert content
+
+🗣️ **Natural Language Queries**:
+• "How long is cardiology wait?"
+• "What hospitals are nearby?"
+• "Have waiting times changed?"
+
+💡 **Usage Tips**:
+• Enter numbers for quick function selection
+• Describe your issue directly for help
+• System monitors automatically after setup
+
+📞 **Need More Help?**
+• Describe specific issues, I'll assist
+• Enter "4" to reset if having problems
+• System operates 24/7 for you"""
+            
+            return self._send_telegram_message(chat_id, help_text, parse_mode='Markdown')
+            
+        except Exception as e:
+            self.logger.error(f"发送帮助菜单失败: {e}")
+            return False
 
     def _handle_unsubscribe(self, chat_id: str, user_lang: str = 'en') -> bool:
         """处理取消订阅"""
-        confirm_text = get_language_text(user_lang, 'unsubscribe_confirm')
-        
-        return self._send_telegram_message(chat_id, confirm_text, parse_mode='Markdown')
+        try:
+            # 更新用户状态为非活跃
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            
+            user_id = f"telegram_{chat_id}"
+            cursor.execute('''
+                UPDATE user_preferences 
+                SET status = 'inactive', updated_at = CURRENT_TIMESTAMP
+                WHERE user_id = ?
+            ''', (user_id,))
+            
+            conn.commit()
+            conn.close()
+            
+            if user_lang == 'zh':
+                confirm_text = """❌ **服务已停止**
+
+您已成功取消订阅所有提醒。
+
+✅ **已停止**：
+• 等候时间监控
+• 自动提醒通知
+• 每日健康助手
+
+🔄 **重新启用**：
+• 发送 "*1*" 重新设置
+• 或发送 "*start*" 重新开始
+
+👋 感谢您使用NHS智能提醒系统！"""
+            else:
+                confirm_text = """❌ **Service Stopped**
+
+You have successfully unsubscribed from all alerts.
+
+✅ **Stopped**:
+• Waiting time monitoring
+• Automatic alert notifications
+• Daily health assistant
+
+🔄 **Re-enable**:
+• Send "*1*" to reset
+• Or send "*start*" to restart
+
+👋 Thank you for using NHS Intelligent Alert System!"""
+            
+            return self._send_telegram_message(chat_id, confirm_text, parse_mode='Markdown')
+            
+        except Exception as e:
+            self.logger.error(f"处理取消订阅失败: {e}")
+            error_text = "❌ 取消订阅失败" if user_lang == 'zh' else "❌ Failed to unsubscribe"
+            return self._send_telegram_message(chat_id, error_text)
 
     def _send_invalid_choice(self, chat_id: str, valid_range: str, user_lang: str = 'en') -> bool:
-        """发送无效选择提示"""
-        error_text = get_language_text(user_lang, 'invalid_choice') + " " + valid_range
-        
-        return self._send_telegram_message(chat_id, error_text, parse_mode='Markdown')
+        """发送无效选择消息"""
+        try:
+            if user_lang == 'zh':
+                error_text = f"""❌ **无效选择**
+
+请输入数字 {valid_range}
+
+💡 **可用选项**：
+{valid_range.replace('-', ' 到 ')} 之间的数字
+
+🔄 **重新尝试**：
+• 发送正确的数字
+• 或描述您的具体需求
+
+📞 输入 "*help*" 获取帮助"""
+            else:
+                error_text = f"""❌ **Invalid Choice**
+
+Please enter a number {valid_range}
+
+💡 **Available Options**:
+Numbers between {valid_range}
+
+🔄 **Try Again**:
+• Send a correct number
+• Or describe your specific need
+
+📞 Enter "*help*" for assistance"""
+            
+            return self._send_telegram_message(chat_id, error_text, parse_mode='Markdown')
+            
+        except Exception as e:
+            self.logger.error(f"发送无效选择消息失败: {e}")
+            return False
+
+    def _show_feature_overview(self, chat_id: str, user_lang: str = 'en') -> bool:
+        """显示功能概览"""
+        try:
+            if user_lang == 'zh':
+                overview_text = """🌟 **NHS智能提醒系统功能概览**
+
+🎯 **核心功能**：
+• 🔍 智能监控：自动监控您关注的专科等候时间
+• 📱 实时提醒：等候时间缩短时立即通知
+• 📊 趋势分析：分析等候时间变化趋势
+• 🗺️ 地理优化：基于您的位置找到最佳选择
+
+⚡ **智能特性**：
+• 🧠 AI驱动的个性化推荐
+• 🌍 多语言支持（支持伦敦Top10语言）
+• 📈 预测分析和趋势预警
+• 🔄 24/7自动监控
+
+💡 **使用场景**：
+• 🏥 等待NHS专科预约
+• 🚑 寻找更快的治疗选择
+• 📈 了解等候时间趋势
+• 🗺️ 发现附近的医疗资源
+
+🚀 **开始使用**：
+发送 "*1*" 立即开始设置！"""
+            else:
+                overview_text = """🌟 **NHS Intelligent Alert System Features**
+
+🎯 **Core Functions**:
+• 🔍 Smart Monitoring: Auto-monitor your specialty waiting times
+• 📱 Real-time Alerts: Instant notifications when wait times drop
+• 📊 Trend Analysis: Analyze waiting time patterns
+• 🗺️ Geographic Optimization: Find best options near you
+
+⚡ **Intelligent Features**:
+• 🧠 AI-powered personalized recommendations
+• 🌍 Multi-language support (London's Top 10 languages)
+• 📈 Predictive analysis and trend alerts
+• 🔄 24/7 automatic monitoring
+
+💡 **Use Cases**:
+• 🏥 Waiting for NHS specialty appointments
+• 🚑 Finding faster treatment options
+• 📈 Understanding waiting time trends
+• 🗺️ Discovering nearby medical resources
+
+🚀 **Get Started**:
+Send "*1*" to start setup immediately!"""
+            
+            return self._send_telegram_message(chat_id, overview_text, parse_mode='Markdown')
+            
+        except Exception as e:
+            self.logger.error(f"显示功能概览失败: {e}")
+            return False
 
     def _handle_natural_language(self, chat_id: str, message_text: str, user_lang: str = 'en') -> bool:
         """处理自然语言 - 集成地理感知查询"""
@@ -1721,3 +1933,160 @@ Please choose your preference (1-4) or enter custom settings:"""
         except Exception as e:
             self.logger.error(f"更新用户状态失败: {e}")
             return False 
+
+    def _has_user_preferences(self, chat_id: str) -> bool:
+        """检查用户是否已有完整的偏好设置"""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            
+            user_id = f"telegram_{chat_id}"
+            cursor.execute("""
+                SELECT postcode, specialty, threshold_weeks, radius_km 
+                FROM user_preferences 
+                WHERE user_id = ? AND status = 'active'
+            """, (user_id,))
+            
+            result = cursor.fetchone()
+            conn.close()
+            
+            # 检查是否所有必要字段都已填写
+            if result:
+                postcode, specialty, threshold_weeks, radius_km = result
+                return all([postcode, specialty, threshold_weeks, radius_km])
+            
+            return False
+            
+        except Exception as e:
+            self.logger.error(f"检查用户偏好失败: {e}")
+            return False
+
+    def _handle_test_daily_alert(self, chat_id: str, user_lang: str = 'en') -> bool:
+        """处理测试每日提醒命令"""
+        try:
+            # 获取用户信息
+            user_info = self._get_user_info_for_daily_alert(chat_id)
+            if not user_info:
+                if user_lang == 'zh':
+                    error_msg = "❌ 无法获取您的用户信息，请先完成设置 (*1*)"
+                else:
+                    error_msg = "❌ Unable to get your user information, please complete setup first (*1*)"
+                return self._send_telegram_message(chat_id, error_msg)
+            
+            # 使用新的结构化生成器
+            from structured_daily_alert_generator import StructuredDailyAlertGenerator
+            generator = StructuredDailyAlertGenerator(self.db_path)
+            
+            # 生成结构化每日推送
+            alert_message = generator.generate_structured_daily_alert(user_info)
+            
+            # 发送消息
+            success = self._send_telegram_message(chat_id, alert_message, parse_mode='Markdown')
+            
+            if success:
+                if user_lang == 'zh':
+                    status_msg = "\n\n✅ 测试每日提醒已发送！这就是您每天早上会收到的内容格式。"
+                else:
+                    status_msg = "\n\n✅ Test daily alert sent! This is the format you'll receive every morning."
+                self._send_telegram_message(chat_id, status_msg)
+                
+                # 记录测试
+                self._log_test_alert(chat_id, user_info.get('user_id', ''), 'success')
+            else:
+                self._log_test_alert(chat_id, user_info.get('user_id', ''), 'failed')
+            
+            return success
+            
+        except Exception as e:
+            self.logger.error(f"处理测试每日提醒失败: {e}")
+            if user_lang == 'zh':
+                error_msg = "❌ 测试每日提醒失败，请稍后重试"
+            else:
+                error_msg = "❌ Failed to test daily alert, please try again later"
+            return self._send_telegram_message(chat_id, error_msg)
+
+    def _get_user_info_for_daily_alert(self, chat_id: str) -> dict:
+        """获取用户信息用于每日提醒生成"""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            
+            user_id = f"telegram_{chat_id}"
+            
+            # 获取用户基本信息
+            cursor.execute("""
+                SELECT chat_id, username, first_name, language_code
+                FROM telegram_users 
+                WHERE chat_id = ?
+            """, (chat_id,))
+            
+            user_row = cursor.fetchone()
+            if not user_row:
+                return None
+            
+            # 获取用户偏好设置（包括language字段）
+            cursor.execute("""
+                SELECT postcode, specialty, threshold_weeks, radius_km, status, language
+                FROM user_preferences 
+                WHERE user_id = ? AND status = 'active'
+            """, (user_id,))
+            
+            prefs_row = cursor.fetchone()
+            if not prefs_row:
+                return None
+            
+            conn.close()
+            
+            # 优先使用user_preferences中的language设置，其次是telegram_users中的language_code
+            user_language = prefs_row[5] if prefs_row[5] else (user_row[3] or 'zh')
+            
+            # 构建用户信息字典
+            user_info = {
+                'user_id': user_id,
+                'chat_id': user_row[0],
+                'username': user_row[1] or '',
+                'first_name': user_row[2] or '',
+                'language': user_language,
+                'postcode': prefs_row[0],
+                'specialty': prefs_row[1],
+                'threshold_weeks': prefs_row[2],
+                'radius_km': prefs_row[3],
+                'status': prefs_row[4]
+            }
+            
+            return user_info
+            
+        except Exception as e:
+            self.logger.error(f"获取用户信息失败: {e}")
+            return None
+    
+    def _log_test_alert(self, chat_id: str, user_id: str, status: str):
+        """记录测试提醒日志"""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            
+            # 创建测试日志表（如果不存在）
+            cursor.execute("""
+                CREATE TABLE IF NOT EXISTS test_alert_logs (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    chat_id TEXT NOT NULL,
+                    user_id TEXT NOT NULL,
+                    status TEXT NOT NULL,
+                    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+                )
+            """)
+            
+            # 插入测试记录
+            cursor.execute("""
+                INSERT INTO test_alert_logs (chat_id, user_id, status)
+                VALUES (?, ?, ?)
+            """, (chat_id, user_id, status))
+            
+            conn.commit()
+            conn.close()
+            
+            self.logger.info(f"测试提醒日志已记录: {chat_id} - {status}")
+            
+        except Exception as e:
+            self.logger.error(f"记录测试提醒日志失败: {e}")

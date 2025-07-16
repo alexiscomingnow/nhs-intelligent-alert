@@ -663,3 +663,156 @@
 2025-07-16 12:43:28,026 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
 2025-07-16 12:43:28,071 - telegram_bot_server - INFO - Starting polling mode...
 2025-07-16 12:43:51,981 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 13:26:14,942 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 13:54:01,198 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 14:01:28,591 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 14:01:28,930 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 14:01:28,930 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 14:01:28,977 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 14:01:54,259 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:02:02,784 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:10:18,429 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 14:10:18,479 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 14:13:59,499 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:14:24,959 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:14:27,187 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:14:36,938 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:14:43,080 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:14:58,936 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:16:00,791 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:16:19,014 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:16:32,334 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:16:45,911 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:16:54,187 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:17:04,407 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:21:59,936 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:22:23,521 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:22:52,551 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:23:49,735 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:24:08,975 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:28:45,110 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [不能访问网络位置。有关网络排除故障的信息，请参阅 Windows 帮助。]
+2025-07-16 14:28:45,155 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 14:28:50,290 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 14:28:50,295 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
+2025-07-16 14:29:17,915 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 14:29:17,950 - telegram_bot_server - INFO - Sleeping for 15 seconds after error...
+2025-07-16 14:39:34,880 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 14:39:35,200 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 14:39:35,200 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 14:39:35,245 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 14:39:47,486 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:39:52,238 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:40:00,246 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:40:01,975 - telegram_driver - ERROR - 处理编号命令失败: 'TelegramDriver' object has no attribute '_show_status'
+2025-07-16 14:40:02,128 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:40:05,377 - telegram_driver - ERROR - 处理编号命令失败: 'TelegramDriver' object has no attribute '_show_status'
+2025-07-16 14:40:05,563 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:40:13,128 - telegram_driver - ERROR - 处理编号命令失败: 'TelegramDriver' object has no attribute '_show_status'
+2025-07-16 14:40:13,354 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:45:58,776 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 14:45:59,090 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 14:45:59,090 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 14:45:59,141 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 14:46:25,990 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:46:32,130 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:46:58,111 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 14:47:00,744 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 15:03:01,626 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 15:03:02,331 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 15:03:02,331 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 15:03:02,386 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 15:03:11,743 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 15:03:14,898 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 15:03:18,487 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 15:03:24,622 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 15:29:20,130 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 15:29:20,506 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 15:29:20,507 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 15:29:20,563 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 15:32:21,965 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 15:32:26,998 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 15:32:27,063 - telegram_driver - ERROR - 生成测试每日提醒失败: This event loop is already running
+2025-07-16 15:32:27,317 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 15:40:19,554 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 15:40:19,896 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 15:40:19,897 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 15:40:19,938 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 15:40:29,809 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 15:40:32,895 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 15:40:33,207 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 15:40:33,360 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:07:38,427 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 16:07:39,009 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 16:07:39,010 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 16:07:39,032 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 16:09:03,464 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:09:07,264 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:09:07,434 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:09:07,582 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:10:32,878 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:10:39,379 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:10:43,702 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:10:43,914 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:10:44,126 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:11:54,673 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:11:54,891 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:11:55,112 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:33:10,645 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 16:33:11,022 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 16:33:11,022 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 16:33:11,078 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 16:33:44,466 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:33:49,716 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:33:49,854 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:33:49,855 - telegram_driver - ERROR - 处理测试每日提醒失败: 'TelegramDriver' object has no attribute '_log_test_alert'
+2025-07-16 16:33:49,994 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:34:31,102 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:34:31,372 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:34:31,374 - telegram_driver - ERROR - 处理测试每日提醒失败: 'TelegramDriver' object has no attribute '_log_test_alert'
+2025-07-16 16:34:31,511 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:54:37,087 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 16:54:37,466 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 16:54:37,468 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 16:54:37,811 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 16:55:19,801 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:55:24,114 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:55:24,378 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 16:55:24,401 - telegram_driver - INFO - 测试提醒日志已记录: 7578790425 - success
+2025-07-16 17:09:38,955 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 17:09:39,308 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 17:09:39,309 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 17:09:39,357 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 17:09:44,187 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 17:09:46,156 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 17:09:46,291 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 17:09:46,306 - telegram_driver - INFO - 测试提醒日志已记录: 7578790425 - success
+2025-07-16 17:17:37,880 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 17:17:38,208 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 17:17:38,209 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 17:17:38,256 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 17:17:57,267 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 17:18:00,728 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 17:18:00,894 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 17:18:00,908 - telegram_driver - INFO - 测试提醒日志已记录: 7578790425 - success
+2025-07-16 17:32:06,746 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 17:32:07,075 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 17:32:07,075 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 17:32:07,115 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 17:32:12,849 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 17:32:16,581 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 17:32:24,589 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 17:32:26,617 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 17:32:26,757 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 17:32:26,770 - telegram_driver - INFO - 测试提醒日志已记录: 7578790425 - success
+2025-07-16 17:43:05,583 - NotificationManager - INFO - NotificationManager initialized with channel 'telegram'
+2025-07-16 17:43:05,948 - telegram_bot_server - INFO - Database initialized successfully
+2025-07-16 17:43:05,949 - telegram_bot_server - INFO - Telegram Bot Server initialized - Token: 7964958963...
+2025-07-16 17:43:06,001 - telegram_bot_server - INFO - Starting polling mode...
+2025-07-16 17:43:12,468 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 17:43:15,383 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 17:43:15,658 - telegram_driver - INFO - Message sent successfully to 7578790425
+2025-07-16 17:43:15,692 - telegram_driver - INFO - 测试提醒日志已记录: 7578790425 - success
+2025-07-16 22:40:31,149 - telegram_bot_server - ERROR - Polling timeout - retrying...
+2025-07-16 22:40:38,267 - telegram_bot_server - INFO - Sleeping for 5 seconds after error...
+2025-07-16 22:40:43,416 - telegram_bot_server - ERROR - Client error: Cannot connect to host api.telegram.org:443 ssl:default [getaddrinfo failed]
+2025-07-16 22:40:43,416 - telegram_bot_server - INFO - Sleeping for 10 seconds after error...
